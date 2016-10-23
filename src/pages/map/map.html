@@ -1,9 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Recycle Your Plastic Bags!</ion-title>
+    <ion-title>
+      <img class="bag-logo" src="assets/images/bag.svg">
+      Recycle Your Plastic Bags!
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <div id="map"></div>
+  <!-- add a #map reference here so we can refer to it using ViewChild later -->
+  <div #map id="map"></div>
+  <!--ion-spinner name="bubbles"></ion-spinner-->
 </ion-content>
