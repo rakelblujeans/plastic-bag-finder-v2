@@ -4,10 +4,11 @@ import { StatusBar } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { ConnectivityMonitor } from '../shared/services/connectivity-monitor.service';
+import { GoogleMapsLoader } from '../shared/services/google-maps-loader.service';
 
 @Component({
   template: `<ion-nav [root]="rootPage"></ion-nav>`,
-  providers: [ConnectivityMonitor]
+  providers: [ConnectivityMonitor, GoogleMapsLoader]
 })
 export class MyApp {
   rootPage = TabsPage;
