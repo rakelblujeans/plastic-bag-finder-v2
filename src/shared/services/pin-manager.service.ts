@@ -66,6 +66,7 @@ export class PinManager {
     const copy = Object.assign({}, pin);
     delete copy.$key;
     delete copy.$exists;
+    console.log(pin);
     this.approvedPins.push(copy);
 
     this.submittedPins.remove(pin.$key);
@@ -78,6 +79,7 @@ export class PinManager {
     const copy = Object.assign({}, pin);
     delete copy.$key;
     delete copy.$exists;
+    console.log(pin);
     this.submittedPins.push(copy);
 
     this.approvedPins.remove(pin.$key);
@@ -135,10 +137,13 @@ export class PinManager {
 
   private save(pin: any): void {
     pin.updatedAt = Date.now();
+    const key = pin.$key;
+    delete pin.$key;
+    delete pin.$exists;
     if (pin.status === Status.APPROVED) {
-      this.approvedPins.push(pin);
+      this.approvedPins.update(key, pin);
     } else if (pin.status === Status.SUBMITTED) {
-      this.submittedPins.push(pin);
+      this.submittedPins.update(key, pin);
     }
   }
 

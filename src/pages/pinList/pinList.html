@@ -65,11 +65,11 @@
         </button>
         <!-- flag -->
         <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
-          <ion-icon name="flag"></ion-icon>
+          <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- unflag -->
-        <button ion-button outline (click)="unflag(pin)" *ngIf="pin.flagged">
-          <ion-icon name="ios-flag-outline"></ion-icon>
+        <button ion-button outline color="danger" (click)="unflag(pin)" *ngIf="pin.flagged">
+          <ion-icon name="flag"></ion-icon>
         </button>
         <!-- unapprove -->
         <button ion-button outline (click)="unapprove(pin)" *ngIf="isApproved(pin)">
@@ -80,7 +80,7 @@
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
+        <button ion-button outline color="favorite" (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
       </ion-item>
@@ -105,11 +105,11 @@
         </button>
         <!-- flag -->
         <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
-          <ion-icon name="flag"></ion-icon>
+          <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- unflag -->
-        <button ion-button outline (click)="unflag(pin)" *ngIf="pin.flagged">
-          <ion-icon name="ios-flag-outline"></ion-icon>
+        <button ion-button outline color="danger" (click)="unflag(pin)" *ngIf="pin.flagged">
+          <ion-icon name="flag"></ion-icon>
         </button>
         <!-- approve -->
         <button ion-button outline (click)="approve(pin)" *ngIf="!isApproved(pin)">
@@ -120,7 +120,8 @@
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
+        <button ion-button outline color="favorite" (click)="unfavorite(pin)"
+            *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
       </ion-item>
