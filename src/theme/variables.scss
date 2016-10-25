@@ -28,7 +28,7 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  favorite:   #69BB7B
+  favorite:   #FEEB07,
 );
 
 
@@ -43,7 +43,8 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
+$tabs-md-background: #000000;
+$tabs-md-tab-color-active: #FFC300;
 
 
 // App Windows Variables

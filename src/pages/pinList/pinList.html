@@ -76,11 +76,11 @@
           <ion-icon name="checkmark-circle-outline"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+        <button ion-button outline color="favorite" (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline color="favorite" (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
+        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
       </ion-item>
@@ -116,11 +116,11 @@
           <ion-icon name="checkmark-circle"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+        <button ion-button outline color="favorite" (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline color="favorite" (click)="unfavorite(pin)"
+        <button ion-button outline (click)="unfavorite(pin)"
             *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>

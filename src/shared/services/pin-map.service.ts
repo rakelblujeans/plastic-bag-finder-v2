@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { Geolocation } from 'ionic-native';
 
 import { GoogleMapsLoader } from './google-maps-loader.service';
+import { PinManager } from './pin-manager.service';
 
 declare let google;
 
 @Injectable()
 export class PinMap {
   private map: any = null;
-  // private markers: Array<any> = [];
-  // private infoWindow: any = null;
+  private markers: Array<any> = [];
+  private infoWindow: any = null;
 
-  constructor(public googleMapsLoader: GoogleMapsLoader) {
+  constructor(public googleMapsLoader: GoogleMapsLoader, public pinManager: PinManager) {
     this.googleMapsLoader = googleMapsLoader;
   }
 
@@ -47,89 +48,85 @@ export class PinMap {
     this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
     // Wait until the map is loaded
-    // google.maps.event.addListenerOnce(this.map, 'idle', () => {
-    //   this.loadMarkers();
-    //   // this.connectivityMonitor.enableInteraction();
-    // });
+    google.maps.event.addListenerOnce(this.map, 'idle', () => {
+      this.loadMarkers();
+      // this.connectivityMonitor.enableInteraction();
+    });
 
-    // google.maps.event.addListener(this.map, 'click', () => {
-    //   this.closeInfoWindow();
-    // });
+    google.maps.event.addListener(this.map, 'click', () => {
+      this.closeInfoWindow();
+    });
   }
 
+  private closeInfoWindow(): void {
+    if (this.infoWindow) {
+      this.infoWindow.close();
+    }
+  }
 
+  private clearMarkers(): void {
+    if (!this.markers.length) {
+      return;
+    }
 
-  // private loadMarkers(): void {}
+    for(const marker of this.markers) {
+      google.maps.event.clearInstanceListeners(marker);
+      marker.setMap(null);
+    }
 
-  // private closeInfoWindow(): void {
-  //   if (this.infoWindow) {
-  //     this.infoWindow.close();
-  //   }
-  // }
+    this.markers.length = 0;
+  }
 
-  // private clearMarkers(): void {
-  //   if (!this.markers.length) {
-  //     return;
-  //   }
+  private loadMarkers(): void {
+    this.pinManager.approvedPins.subscribe(pins => {
+      // console.log("Pins: ", pins);
+      for (const pin of pins) {
+        const pinPos = new google.maps.LatLng(pin.lat, pin.lng);
 
-  //   for (let i = 0; i < this.markers.length; i++) {
-  //     google.maps.event.clearInstanceListeners(this.markers[i]);
-  //     this.markers[i].setMap(null);
-  //   }
+        const marker = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: pinPos
+        });
+        this.markers.push(marker);
 
-  //   this.markers.length = 0;
-  // }
+        this.addInfoWindow(marker, this.buildContentString(pin), pin);
+      }
+    });
+  }
 
-  // private loadMarkers(): void {
-  //   // PinService.approvedPins.$loaded().then(function(pins) {
-  //   //   // console.log("Pins: ", pins);
-  //   //   for (var i = 0; i < pins.length; i++) {
-  //   //     var pin = pins[i];
-  //   //     var pinPos = new google.maps.LatLng(pin.lat, pin.lng);
+  // Todo: define html in code
+  private buildContentString(pin: any): string {
+    let output = '';
+    // Todo: highlight if favorite
+    // if ($scope.user && $scope.PinService.isFavorite(pin, $scope.user.uid)) {
+    //   output += '<i class="icon ion-ios-star energized"></i>';
+    // }
+    if (pin.flagged) {
+      output += '<ion-icon name="flag" color="danger"></ion-icon>';
+    }
 
-  //   //     var marker = new google.maps.Marker({
-  //   //       map: map,
-  //   //       animation: google.maps.Animation.DROP,
-  //   //       position: pinPos
-  //   //     });
-  //   //     markers.push(marker);
+    output += "<a class='map-infoWindowTitle' href='#/tab/mapPins/" + pin.$key + "'>" +
+        (pin.name ? pin.name : pin.short_address) + "</a>";
 
-  //   //     addInfoWindow(marker, buildContentString(pin), pin);
-  //   //   }
-  //   // });
-  // }
+    // Todo: show icon if currently open
+    // if (pin.opening_hours && pin.opening_hours.open_now) { }
+    output += "<div><a class='map-infoWindowDirections' href='https://www.google.com/maps/place/"
+        + pin.address + "'>Directions</a></div>";
 
-  //  // todo: define html in code
-  // private buildContentString(pin: any): string {
-  //   let output = '';
-  //   // if ($scope.user && $scope.PinService.isFavorite(pin, $scope.user.uid)) {
-  //   //   output += '<i class="icon ion-ios-star energized"></i>';
-  //   // }
-  //   if (pin.flagged) {
-  //     output += '<i class="icon ion-ios-flag assertive pb-overlay-icon"></i>';
-  //   }
+    return "<div class='map-infoWindowContent'>" + output + "</div>";
+  }
 
-  //   output += "<a class='map-info-titleLink' href='#/tab/mapPins/" + pin.$id + "'>" +
-  //       (pin.name ? pin.name : pin.short_address) + "</a>";
+  private addInfoWindow(marker, message, record): void {
+    this.infoWindow = new google.maps.InfoWindow({
+      content: message
+    });
 
-  //   // todo: show icon if currently open
-  //   // if (pin.opening_hours && pin.opening_hours.open_now) { }
-  //   output += "<div><a class='map-info-DirectionsLink' href='https://www.google.com/maps/place/"
-  //       + pin.address + "'>Directions</a></div>";
-
-  //   return "<div class='map-infoContent'>" + output + "</div>";
-  // }
-
-  // private addInfoWindow(marker, message, record): void {
-  //   this.infoWindow = new google.maps.InfoWindow({
-  //     content: message
-  //   });
-
-  //   google.maps.event.addListener(marker, 'click', function() {
-  //     this.closeInfoWindow();
-  //     this.infoWindow.open(this.map, marker);
-  //   });
-  // }
+    google.maps.event.addListener(marker, 'click', () => {
+      this.closeInfoWindow();
+      this.infoWindow.open(this.map, marker);
+    });
+  }
 
   // private reloadMarkers(): void {
   //   this.clearMarkers();

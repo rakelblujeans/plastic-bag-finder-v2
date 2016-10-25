@@ -1,7 +1,4 @@
 import { AngularFire, FirebaseListObservable } from 'angularfire2'; // FirebaseObjectObservable
-// import { Observable } from 'rxjs/Observable';
-
-// import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
 import { Injectable } from '@angular/core';
 
@@ -22,12 +19,11 @@ export class PinManager {
 
   constructor(af: AngularFire) {
     this.af = af;
-    this.approvedPins = this.af.database.list('/pins/approved');//, {
-    this.submittedPins = this.af.database.list('/pins/submitted');//, {
+    this.approvedPins = this.af.database.list('/pins/approved');
+    this.submittedPins = this.af.database.list('/pins/submitted');
     //   query: {
     //     orderByChild: 'timestamp'
     //   }
-    // });
   }
 
   add(place: any): void {
@@ -66,7 +62,6 @@ export class PinManager {
     const copy = Object.assign({}, pin);
     delete copy.$key;
     delete copy.$exists;
-    console.log(pin);
     this.approvedPins.push(copy);
 
     this.submittedPins.remove(pin.$key);
@@ -79,7 +74,6 @@ export class PinManager {
     const copy = Object.assign({}, pin);
     delete copy.$key;
     delete copy.$exists;
-    console.log(pin);
     this.submittedPins.push(copy);
 
     this.approvedPins.remove(pin.$key);

@@ -10,8 +10,8 @@ import { PinManager } from '../../shared/services/pin-manager.service';
 })
 export class PinListPage {
   newPin: any = {};
-  approvedPins: any;
-  submittedPins: any;
+  approvedPins: FirebaseListObservable;
+  submittedPins: FirebaseListObservable;
   formExpanded: boolean = false;
   autocomplete: any;
   place: any; // string? // value taken from the chosen autocomplete entry
@@ -19,7 +19,6 @@ export class PinListPage {
   constructor(public navCtrl: NavController,  private elementRef:ElementRef,
       public pinManager: PinManager) {
     this.pinManager = pinManager;
-    // this.placeCtrl = new Control('', Validators.minLength(2));
   }
 
   ionViewDidLoad() {
@@ -39,7 +38,7 @@ export class PinListPage {
 
   flag(pin: any): void {
     this.pinManager.flag(pin);
-    // todo: moderator notifications, allow people to leave a
+    // todo: moderate notifications, allow people to leave a
     // comment on why they're flagging
   }
 
