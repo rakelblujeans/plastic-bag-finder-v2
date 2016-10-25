@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from 'ionic-native';
 
-// import { googleMapsKey as apiKey } from '../google-api-key';
 import { GoogleMapsLoader } from './google-maps-loader.service';
 
 declare let google;
@@ -9,21 +8,35 @@ declare let google;
 @Injectable()
 export class PinMap {
   private map: any = null;
-  private markers: Array<any> = [];
-  private infoWindow: any = null;
+  // private markers: Array<any> = [];
+  // private infoWindow: any = null;
 
-  constructor(private googleMapsLoader: GoogleMapsLoader) {
+  constructor(public googleMapsLoader: GoogleMapsLoader) {
     this.googleMapsLoader = googleMapsLoader;
   }
 
-  public loadMap(mapElement: any): void {
-    console.log('PinMap.loadMap', mapElement);
+  loadMap(mapElement: any): void {
     this.mapElement = mapElement;
     this.googleMapsLoader.init(this.initMap.bind(this));
   }
 
+  initMap(): void {
+    // const options = {
+    //   timeout: 10000,
+    //   enableHighAccuracy: true
+    // };
+
+    Geolocation.getCurrentPosition().then((position) => {
+      const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      this.setMapWithLocation(latLng);
+    }, (err) => {
+      console.log(err);
+      const latLng = new google.maps.LatLng(40.768037, -73.975705);
+      this.setMapWithLocation(latLng);
+    });
+  }
+
   private setMapWithLocation(latLng: any): void {
-    console.log('PinMap.setMapWithLocation', latLng, this.mapElement);
     const mapOptions = {
       center: latLng,
       zoom: 15,
@@ -44,22 +57,7 @@ export class PinMap {
     // });
   }
 
-  public initMap(): void {
-    console.log("***** PinMap.initMap cb");
-    const options = {
-      timeout: 10000,
-      enableHighAccuracy: true
-    };
 
-    Geolocation.getCurrentPosition().then((position) => {
-      const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      this.setMapWithLocation(latLng);
-    }, (err) => {
-      console.log(err);
-      const latLng = new google.maps.LatLng(40.768037, -73.975705);
-      this.setMapWithLocation(latLng);
-    });
-  }
 
   // private loadMarkers(): void {}
 

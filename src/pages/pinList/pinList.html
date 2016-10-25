@@ -1,17 +1,126 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
+      <img class="bag-logo" src="assets/images/bag.svg">
       Recycle Your Plastic Bags
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
+
+  <form #form="ngForm" class="pins-form" novalidate (ngSubmit)="submitForm(form.value)">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Enter new drop-off location</ion-label>
+        <ion-input type="text" id="placeQuery" name="placeQuery"
+            [(ngModel)]="newPin.place" minlength="2" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <button ion-button type="submit" color="secondary" class="pins-button"
+            [disabled]="!form.valid">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </button>
+
+        <button ion-button color="danger" class="pins-button" (click)="cancelForm($event)">
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+
+  </form>
+
   <ion-list>
-    <ion-list-header>Approved Locations</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
-    </ion-item>
+    <ion-item-group>
+      <ion-item-divider light>Approved Pins</ion-item-divider>
+
+      <ion-item detail-push *ngFor="let pin of approvedPins | async">
+        <h2>{{pin.name}}</h2>
+        <p class="pins-address">
+          {{pin.address}}<br>
+          <small>Last updated {{formatDate(pin.updatedAt)}}</small>
+        </p>
+
+        <!-- details -->
+        <!--button ion-button outline item-right icon-right>
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button-->
+        <!-- delete -->
+        <button ion-button outline>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+        <!-- flag -->
+        <button ion-button outline>
+          <ion-icon name="flag"></ion-icon>
+        </button>
+        <!-- unflag -->
+        <button ion-button outline>
+          <ion-icon name="ios-flag-outline"></ion-icon>
+        </button>
+        <!-- approve -->
+        <button ion-button outline>
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </button>
+        <!-- unapprove -->
+        <button ion-button outline>
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </button>
+        <!-- favorite -->
+        <button ion-button outline>
+          <ion-icon name="star"></ion-icon>
+        </button>
+        <!-- unfavorite -->
+        <button ion-button outline>
+          <ion-icon name="star-outline"></ion-icon>
+        </button>
+      </ion-item>
+
+    </ion-item-group>
+    <ion-item-group>
+       <ion-item-divider light>Pins Awaiting Moderation</ion-item-divider>
+      <ion-item *ngFor="let pin of submittedPins | async">
+        <h2>{{pin.name}}</h2>
+        <p class="pins-address">
+          {{pin.address}}<br>
+          <small>Last updated {{formatDate(pin.updatedAt)}}</small>
+        </p>
+
+        <!-- details -->
+        <!--button ion-button outline item-right icon-right>
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button-->
+        <!-- delete -->
+        <button ion-button outline>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+        <!-- flag -->
+        <button ion-button outline>
+          <ion-icon name="flag"></ion-icon>
+        </button>
+        <!-- unflag -->
+        <button ion-button outline>
+          <ion-icon name="ios-flag-outline"></ion-icon>
+        </button>
+        <!-- approve -->
+        <button ion-button outline>
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </button>
+        <!-- unapprove -->
+        <button ion-button outline>
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </button>
+        <!-- favorite -->
+        <button ion-button outline>
+          <ion-icon name="star"></ion-icon>
+        </button>
+        <!-- unfavorite -->
+        <button ion-button outline>
+          <ion-icon name="star-outline"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-item-group>
   </ion-list>
+
 </ion-content>

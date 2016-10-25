@@ -10,12 +10,11 @@ declare let google;
 export class GoogleMapsLoader {
   private postLoadCallback: any = null;
 
-  constructor(private connectivityMonitor: ConnectivityMonitor) {
+  constructor(public connectivityMonitor: ConnectivityMonitor) {
     this.connectivityMonitor = connectivityMonitor;
   }
 
-  public init(postLoadCb): void {
-    console.log('loader.init', this.connectivityMonitor.isOnline());
+  init(postLoadCb): void {
     this.postLoadCallback = postLoadCb;
     // this.connectivityMonitor.disableInteraction();
 
@@ -40,11 +39,9 @@ export class GoogleMapsLoader {
   }
 
   private loadGoogleMaps(): void {
-    console.log('loader.loadGoogleMaps');
     // this.connectivityMonitor.disableInteraction('Loading google maps');
     // This function will be called once the SDK has been loaded
     window.googleMapsCb = () => {
-      console.log('gb cb');
       window.google = google;
       if (this.postLoadCallback) {
         this.postLoadCallback();
