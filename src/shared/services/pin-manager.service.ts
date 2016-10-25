@@ -30,7 +30,7 @@ export class PinManager {
     // });
   }
 
-  public add(place: any): void {
+  add(place: any): void {
     // console.log('inside adding', place);
     // console.log('submittedPins', submittedPins);
     const newPin = {};
@@ -38,13 +38,13 @@ export class PinManager {
     if (newPin.address !== '' && newPin.address !== null) {
       this.submittedPins.push(newPin);
     }
-  };
+  }
 
-  public remove(pin: any): void {
+  remove(pin: any): void {
     if (pin.status === Status.APPROVED) {
-      approvedPins.remove(pin.$key);
+      this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
-      submittedPins.remove(pin.$key);
+      this.submittedPins.remove(pin.$key);
     }
   }
 
@@ -59,22 +59,33 @@ export class PinManager {
   }
 
   approve(pin: any): void {
+    // console.log(pin, pin.$key);
     pin.status = Status.APPROVED;
     pin.updatedAt = Date.now();
-    this.approvedPins.add(pin);
+
+    const copy = Object.assign({}, pin);
+    delete copy.$key;
+    delete copy.$exists;
+    this.approvedPins.push(copy);
+
     this.submittedPins.remove(pin.$key);
   };
 
   unapprove(pin: any): void {
     pin.status = Status.SUBMITTED;
     pin.updatedAt = Date.now();
-    this.submittedPins.$add(pin);
-    this.approvedPins.$remove(pin);
-  };
+
+    const copy = Object.assign({}, pin);
+    delete copy.$key;
+    delete copy.$exists;
+    this.submittedPins.push(copy);
+
+    this.approvedPins.remove(pin.$key);
+  }
 
   isApproved(pin: any): void {
     return pin.status === Status.APPROVED;
-  };
+  }
 
   // TODO: notify admin of flags through notifications
   flag(pin: any): void {
@@ -125,9 +136,9 @@ export class PinManager {
   private save(pin: any): void {
     pin.updatedAt = Date.now();
     if (pin.status === Status.APPROVED) {
-      approvedPins.$save(pin);
+      this.approvedPins.push(pin);
     } else if (pin.status === Status.SUBMITTED) {
-      submittedPins.$save(pin);
+      this.submittedPins.push(pin);
     }
   }
 
@@ -139,7 +150,7 @@ export class PinManager {
     var idx = pin.favorites.indexOf(uid);
     if (idx == -1) {
       pin.favorites.push(uid);
-      this.ave(pin);
+      this.save(pin);
     }
   }
 
@@ -164,14 +175,3 @@ export class PinManager {
   }
 
 }
-
-// //     var submittedPinsRef = firebase.database().ref().child('pins/submitted');
-// //     var approvedPinsRef = firebase.database().ref().child('pins/approved');
-
-// //     var Status = {
-// //       SUBMITTED: 'SUBMITTED',
-// //       APPROVED: 'APPROVED',
-// //       FLAGGED: 'FLAGGED'
-// //     }
-
-

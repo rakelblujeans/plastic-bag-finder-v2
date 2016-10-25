@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
-      Recycle Your Plastic Bags
+      Trick or Treat
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -60,31 +60,27 @@
           <ion-icon name="arrow-forward"></ion-icon>
         </button-->
         <!-- delete -->
-        <button ion-button outline>
+        <button ion-button outline (click)="remove(pin)">
           <ion-icon name="trash"></ion-icon>
         </button>
         <!-- flag -->
-        <button ion-button outline>
+        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
           <ion-icon name="flag"></ion-icon>
         </button>
         <!-- unflag -->
-        <button ion-button outline>
+        <button ion-button outline (click)="unflag(pin)" *ngIf="pin.flagged">
           <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
-        <!-- approve -->
-        <button ion-button outline>
-          <ion-icon name="checkmark-circle"></ion-icon>
-        </button>
         <!-- unapprove -->
-        <button ion-button outline>
+        <button ion-button outline (click)="unapprove(pin)" *ngIf="isApproved(pin)">
           <ion-icon name="checkmark-circle-outline"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline>
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline>
+        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
       </ion-item>
@@ -104,31 +100,27 @@
           <ion-icon name="arrow-forward"></ion-icon>
         </button-->
         <!-- delete -->
-        <button ion-button outline>
+        <button ion-button outline (click)="remove(pin)">
           <ion-icon name="trash"></ion-icon>
         </button>
         <!-- flag -->
-        <button ion-button outline>
+        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
           <ion-icon name="flag"></ion-icon>
         </button>
         <!-- unflag -->
-        <button ion-button outline>
+        <button ion-button outline (click)="unflag(pin)" *ngIf="pin.flagged">
           <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- approve -->
-        <button ion-button outline>
+        <button ion-button outline (click)="approve(pin)" *ngIf="!isApproved(pin)">
           <ion-icon name="checkmark-circle"></ion-icon>
         </button>
-        <!-- unapprove -->
-        <button ion-button outline>
-          <ion-icon name="checkmark-circle-outline"></ion-icon>
-        </button>
         <!-- favorite -->
-        <button ion-button outline>
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline>
+        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
       </ion-item>
