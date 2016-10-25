@@ -4,10 +4,28 @@ page-pin-list {
     margin: 0;
     width: 50%;
   }
-/*  .pins-pinForm {
-    margin-bottom: 30px;
+
+  .pins-form {
+    // background-color: rgba(251, 162, 19, 0.2);
   }
 
+  .pins-form .item {
+    border: 0 !important;
+  }
+
+  .pins-form .item .item-content {
+    // background-color: transparent !important;
+  }
+
+  .pins-form.is-hidden {
+    display: none;
+  }
+
+  .pins-form.is-visible {
+    display: visible;
+  }
+
+/*
   .item, .item h1, .item h2, .item h3, .item h4, .item h5, .item h6, .item p,
   .item-content, .item-content h1, .item-content h2, .item-content h3, .item-content h4, .item-content h5, .item-content h6,
   .item-content p,

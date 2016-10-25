@@ -12,7 +12,7 @@ export class PinListPage {
   newPin: any = {};
   approvedPins: any;
   submittedPins: any;
-  addPanelExpanded: boolean = false;
+  formExpanded: boolean = false;
   autocomplete: any;
   place: any; // string? // value taken from the chosen autocomplete entry
 
@@ -82,13 +82,15 @@ export class PinListPage {
   }
 
   openAddPanel(): void {
-    this.newPin = {};
-    this.place = {};
-    this.addPanelExpanded = true;
+    if (!this.formExpanded) {
+      this.newPin = {};
+      this.place = {};
+      this.formExpanded = true;
+    }
   }
 
   cancelForm(event): void {
-    this.addPanelExpanded = false;
+    this.formExpanded = false;
     event.preventDefault();
     event.stopPropagation();
   }
@@ -105,7 +107,7 @@ export class PinListPage {
     if (this.place && this.place.adr_address) {
       this.pinManager.add(this.place);
     }
-    this.addPanelExpanded = false;
+    this.formExpanded = false;
   }
 
   isAdmin(): boolean {

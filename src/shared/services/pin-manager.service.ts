@@ -1,0 +1,177 @@
+import { AngularFire, FirebaseListObservable } from 'angularfire2'; // FirebaseObjectObservable
+// import { Observable } from 'rxjs/Observable';
+
+// import {AngularFire, FirebaseListObservable} from 'angularfire2';
+
+import { Injectable } from '@angular/core';
+
+enum Status {
+  SUBMITTED,
+  APPROVED,
+  FLAGGED
+};
+
+// todo: limit by proximity to me?
+// todo: pagination?
+
+@Injectable()
+export class PinManager {
+  private af: any;
+  submittedPins: FirebaseListObservable<any>;
+  approvedPins: FirebaseListObservable<any>;
+
+  constructor(af: AngularFire) {
+    this.af = af;
+    this.approvedPins = this.af.database.list('/pins/approved');//, {
+    this.submittedPins = this.af.database.list('/pins/submitted');//, {
+    //   query: {
+    //     orderByChild: 'timestamp'
+    //   }
+    // });
+  }
+
+  public add(place: any): void {
+    // console.log('inside adding', place);
+    // console.log('submittedPins', submittedPins);
+    const newPin = {};
+    this.setData(newPin, place);
+    if (newPin.address !== '' && newPin.address !== null) {
+      this.submittedPins.push(newPin);
+    }
+  };
+
+  public remove(pin: any): void {
+    if (pin.status === Status.APPROVED) {
+      approvedPins.remove(pin.$key);
+    } else if (pin.status === Status.SUBMITTED) {
+      submittedPins.remove(pin.$key);
+    }
+  }
+
+  /** In practice, we should never need this. The only updates
+  * someone would make is to flag this place as no longer accepting donations,
+  * otherwise they will leave comments. Anything else should be brought up to the
+  * moderators attention.
+  */
+  update(pin: any, place: any): void {
+    this.setData(pin, place);
+    this.save(pin);
+  }
+
+  approve(pin: any): void {
+    pin.status = Status.APPROVED;
+    pin.updatedAt = Date.now();
+    this.approvedPins.add(pin);
+    this.submittedPins.remove(pin.$key);
+  };
+
+  unapprove(pin: any): void {
+    pin.status = Status.SUBMITTED;
+    pin.updatedAt = Date.now();
+    this.submittedPins.$add(pin);
+    this.approvedPins.$remove(pin);
+  };
+
+  isApproved(pin: any): void {
+    return pin.status === Status.APPROVED;
+  };
+
+  // TODO: notify admin of flags through notifications
+  flag(pin: any): void {
+    pin.flagged = true;
+    this.save(pin);
+  }
+
+  unflag(pin: any): void {
+    pin.flagged = false;
+    this.save(pin);
+  }
+
+  private setData(pin: any, place: any): void {
+    // console.log(pin, place);
+    pin.placeId = place.place_id;
+    pin.lat = place.geometry.location.lat();
+    pin.lng = place.geometry.location.lng();
+    pin.address = place.formatted_address;
+    pin.short_address = place.formatted_address.substring(0, place.formatted_address.indexOf(','));
+    pin.adr_address = place.adr_address;
+    pin.vicinity = place.vicinity; // local area, like Brooklyn
+    if (pin.name) {
+      pin.name = place.name;
+    }
+
+    if (pin.phone) {
+      pin.phone = place.formatted_phone_number;
+    }
+
+    if (place.opening_hours) {
+      pin.opening_hours = place.opening_hours;
+    }
+
+    if (pin.url) {
+      pin.url = place.url;
+    }
+
+    if (pin.icon) {
+      pin.icon = place.icon;
+    }
+
+    pin.favorites = [];
+    pin.status = 'submitted';
+    pin.createdAt = Date.now();
+    pin.updatedAt = Date.now();
+  }
+
+  private save(pin: any): void {
+    pin.updatedAt = Date.now();
+    if (pin.status === Status.APPROVED) {
+      approvedPins.$save(pin);
+    } else if (pin.status === Status.SUBMITTED) {
+      submittedPins.$save(pin);
+    }
+  }
+
+  private addToFavorites(pin: any, uid: any): void {
+    if (!pin.favorites) {
+      pin.favorites = [];
+    }
+
+    var idx = pin.favorites.indexOf(uid);
+    if (idx == -1) {
+      pin.favorites.push(uid);
+      this.ave(pin);
+    }
+  }
+
+  private removeFromFavorites(pin: any, uid: any): void {
+    if (!pin || !pin.favorites) {
+      return;
+    }
+
+    var idx = pin.favorites.indexOf(uid);
+    if (idx > -1) {
+      pin.favorites.splice(idx, 1);
+      this.save(pin);
+    }
+  }
+
+  isFavorite(pin: any, uid: any): void {
+    if (!pin || !pin.favorites) {
+      return false;
+    }
+
+    return pin.favorites.indexOf(uid) > -1;
+  }
+
+}
+
+// //     var submittedPinsRef = firebase.database().ref().child('pins/submitted');
+// //     var approvedPinsRef = firebase.database().ref().child('pins/approved');
+
+// //     var Status = {
+// //       SUBMITTED: 'SUBMITTED',
+// //       APPROVED: 'APPROVED',
+// //       FLAGGED: 'FLAGGED'
+// //     }
+
+

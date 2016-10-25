@@ -8,33 +8,45 @@
 </ion-header>
 
 <ion-content>
+  <!-- Real floating action button, fixed. It will not scroll with the content -->
+  <ion-fab top right edge>
+    <button ion-fab mini color="dark" (click)="openAddPanel()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
-  <form #form="ngForm" class="pins-form" novalidate (ngSubmit)="submitForm(form.value)">
-    <ion-list>
-      <ion-item>
-        <ion-label floating>Enter new drop-off location</ion-label>
-        <ion-input type="text" id="placeQuery" name="placeQuery"
-            [(ngModel)]="newPin.place" minlength="2" required>
-        </ion-input>
-      </ion-item>
+  <ion-card>
+    <ion-card-content class="pins-form" [ngClass]="{
+          'is-visible': formExpanded,
+          'is-hidden': !formExpanded
+        }">
+      <form #form="ngForm"  novalidate (ngSubmit)="submitForm(form.value)">
+      <ion-list>
+        <ion-item>
+          <ion-label floating>Enter new drop-off location</ion-label>
+          <ion-input type="text" id="placeQuery" name="placeQuery"
+              [(ngModel)]="newPin.place" minlength="2" required>
+          </ion-input>
+        </ion-item>
 
-      <ion-item>
-        <button ion-button type="submit" color="secondary" class="pins-button"
-            [disabled]="!form.valid">
-          <ion-icon name="checkmark-circle"></ion-icon>
-        </button>
+        <ion-item>
+          <button ion-button type="submit" color="secondary" class="pins-button"
+              [disabled]="!form.valid">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </button>
 
-        <button ion-button color="danger" class="pins-button" (click)="cancelForm($event)">
-          <ion-icon name="close-circle"></ion-icon>
-        </button>
-      </ion-item>
-    </ion-list>
-
-  </form>
+          <button ion-button color="danger" class="pins-button" (click)="cancelForm($event)">
+            <ion-icon name="close-circle"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list>
+    </form>
+    </ion-card-content>
+  </ion-card>
 
   <ion-list>
     <ion-item-group>
-      <ion-item-divider light>Approved Pins</ion-item-divider>
+      <ion-item-divider light>Approved Locations</ion-item-divider>
 
       <ion-item detail-push *ngFor="let pin of approvedPins | async">
         <h2>{{pin.name}}</h2>
@@ -79,7 +91,7 @@
 
     </ion-item-group>
     <ion-item-group>
-       <ion-item-divider light>Pins Awaiting Moderation</ion-item-divider>
+       <ion-item-divider light>Locations Awaiting Moderation</ion-item-divider>
       <ion-item *ngFor="let pin of submittedPins | async">
         <h2>{{pin.name}}</h2>
         <p class="pins-address">
