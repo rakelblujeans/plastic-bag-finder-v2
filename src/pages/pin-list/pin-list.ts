@@ -1,12 +1,13 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { FirebaseListObservable } from 'angularfire2';
 
 import { PinManager } from '../../shared/services/pin-manager.service';
+import { PinDetailPage } from '../pin-detail/pin-detail';
 
 @Component({
   selector: 'page-pin-list',
-  templateUrl: 'pinList.html'
+  templateUrl: 'pin-list.html'
 })
 export class PinListPage {
   newPin: any = {};
@@ -14,13 +15,13 @@ export class PinListPage {
   submittedPins: FirebaseListObservable;
   formExpanded: boolean = false;
   autocomplete: any;
-  place: any; // string? // value taken from the chosen autocomplete entry
+  place: any; // value taken from the chosen autocomplete entry
 
-  constructor(public navCtrl: NavController,  private elementRef:ElementRef,
-      public pinManager: PinManager) {
-    this.pinManager = pinManager;
+  constructor(private navController: NavController, private elementRef:ElementRef,
+      private pinManager: PinManager) {
   }
 
+  // ngOnInit is problematic. views are cached/loaded once, so it will never get hit again.
   ionViewDidLoad() {
     this.approvedPins = this.pinManager.approvedPins;
     this.submittedPins = this.pinManager.submittedPins;
@@ -88,8 +89,10 @@ export class PinListPage {
     }
   }
 
-  cancelForm(event): void {
+  cancelForm(event: any): void {
+    console.log('canceled');
     this.formExpanded = false;
+    console.log('Event', event);
     event.preventDefault();
     event.stopPropagation();
   }
@@ -102,7 +105,8 @@ export class PinListPage {
     }
   }
 
-  submitForm(val: any): void {
+  submitForm(): void {
+    console.log('submitted');
     if (this.place && this.place.adr_address) {
       this.pinManager.add(this.place);
     }
@@ -132,4 +136,11 @@ export class PinListPage {
     return date.toLocaleTimeString('en-us', options);
   }
 
+  viewDetail(pinKey: string, isApproved: boolean) {
+    this.navController.push(PinDetailPage,
+      {
+        key: pinKey,
+        isApproved
+      });
+  }
 }

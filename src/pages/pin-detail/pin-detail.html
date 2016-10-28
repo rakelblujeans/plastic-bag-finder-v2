@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar color="halloween">
+    <ion-title>
+      <img class="bag-logo" src="assets/images/bag.svg">
+      {{((pin | async)?.name || 'Location Detail')}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="pinDetail-content">
+    <a class="pinDetail-line" [href]="(pin | async)?.url" *ngIf="(pin | async)?.url">
+      <h2>
+        <span [innerHTML]="(pin | async)?.adr_address"></span>
+      </h2>
+    </a>
+
+    <h2 class="pinDetail-line" *ngIf="!(pin | async)?.url">
+      <span [innerHTML]="(pin | async)?.adr_address"></span>
+    </h2>
+
+    <a class="pinDetail-line" href="tel:{{(pin | async)?.phone}}" *ngIf="(pin | async)?.phone">
+      <h4>{{(pin | async)?.phone}}</h4>
+    </a>
+
+    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!(pin | async)?.phone">
+      (No phone available)
+    </p>
+
+    <ul class="pinDetail-line" *ngIf="(pin | async)?.opening_hours">
+      <!--li class="pinDetail-openNowMessage" ng-if="pin.opening_hours.open_now"-->
+        <!-- Open Now -->
+      <!--/li-->
+      <li *ngFor="let daily_hours of (pin | async)?.opening_hours.weekday_text">
+        {{daily_hours}}
+      </li>
+    </ul>
+
+    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!(pin | async)?.opening_hours">
+      (No hours available)
+    </p>
+
+    <iframe class="pinDetail-map"frameborder="0"
+        [src]="sanitizeUrl('https://www.google.com/maps/embed/v1/place?q=place_id:' +
+            (pin | async)?.placeId + '&key=' + googleMapsKey)"
+        allowfullscreen>
+    </iframe>
+  </div>
+</ion-content>

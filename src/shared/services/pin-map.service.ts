@@ -64,18 +64,18 @@ export class PinMap {
     }
   }
 
-  private clearMarkers(): void {
-    if (!this.markers.length) {
-      return;
-    }
+  // private clearMarkers(): void {
+  //   if (!this.markers.length) {
+  //     return;
+  //   }
 
-    for(const marker of this.markers) {
-      google.maps.event.clearInstanceListeners(marker);
-      marker.setMap(null);
-    }
+  //   for(const marker of this.markers) {
+  //     google.maps.event.clearInstanceListeners(marker);
+  //     marker.setMap(null);
+  //   }
 
-    this.markers.length = 0;
-  }
+  //   this.markers.length = 0;
+  // }
 
   private loadMarkers(): void {
     this.pinManager.approvedPins.subscribe(pins => {

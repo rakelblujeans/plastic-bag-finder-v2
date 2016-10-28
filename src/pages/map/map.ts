@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
 
 import { PinMap } from '../../shared/services/pin-map.service';
 
@@ -13,8 +12,7 @@ export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController, public pinMap: PinMap) {
-    this.pinMap = pinMap;
+  constructor(private pinMap: PinMap) {
   }
 
   ionViewDidLoad() {

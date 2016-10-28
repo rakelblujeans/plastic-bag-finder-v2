@@ -1,6 +1,5 @@
-import { AngularFire, FirebaseListObservable } from 'angularfire2'; // FirebaseObjectObservable
-
 import { Injectable } from '@angular/core';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 enum Status {
   SUBMITTED,
@@ -94,6 +93,15 @@ export class PinManager {
     this.save(pin);
   }
 
+  // Used to display approved pins on the map
+  find(key: string, isApproved: boolean): FirebaseObjectObservable<any> {
+    if (isApproved) {
+      return this.af.database.object('/pins/approved/' + key);
+    } else {
+      return this.af.database.object('/pins/submitted/' + key);
+    }
+  }
+
   private setData(pin: any, place: any): void {
     // console.log(pin, place);
     pin.placeId = place.place_id;
@@ -165,7 +173,7 @@ export class PinManager {
     }
   }
 
-  isFavorite(pin: any, uid: any): void {
+  isFavorite(pin: any, uid: any): boolean {
     if (!pin || !pin.favorites) {
       return false;
     }

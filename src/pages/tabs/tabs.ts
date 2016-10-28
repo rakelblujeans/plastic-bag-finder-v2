@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { AccountPage } from '../account/account';
 import { MapPage } from '../map/map';
-import { PinListPage } from '../pinList/pinList';
+import { PinListPage } from '../pin-list/pin-list';
 
 @Component({
   templateUrl: 'tabs.html'

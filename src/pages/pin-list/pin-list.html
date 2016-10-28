@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="halloween">
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
       Trick or Treat
@@ -20,18 +20,19 @@
           'is-visible': formExpanded,
           'is-hidden': !formExpanded
         }">
-      <form #form="ngForm"  novalidate (ngSubmit)="submitForm(form.value)">
-      <ion-list>
+      <form #form="ngForm" novalidate>
+      <ion-list no-lines>
         <ion-item>
           <ion-label floating>Enter new drop-off location</ion-label>
-          <ion-input type="text" id="placeQuery" name="placeQuery"
-              [(ngModel)]="newPin.place" minlength="2" required>
+          <ion-input type="text" id="placeQuery" name="placeQuery" minlength="2" required
+              [(ngModel)]="newPin.place" (keyup.enter)="$event.preventDefault()"
+              (blur)="$event.preventDefault()">
           </ion-input>
         </ion-item>
 
         <ion-item>
-          <button ion-button type="submit" color="secondary" class="pins-button"
-              [disabled]="!form.valid">
+          <button type="submit" ion-button color="secondary" class="pins-button"
+              [disabled]="!form.form.valid" (click)="submitForm()">
             <ion-icon name="checkmark-circle"></ion-icon>
           </button>
 
@@ -83,6 +84,8 @@
         <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
+
+         <a (click)="viewDetail(pin.$key, true)" item-right>View</a>
       </ion-item>
 
     </ion-item-group>
@@ -124,6 +127,8 @@
             *ngIf="isFavorite(pin)">
           <ion-icon name="star-outline"></ion-icon>
         </button>
+
+        <a (click)="viewDetail(pin.$key, false)" item-right>View</a>
       </ion-item>
     </ion-item-group>
   </ion-list>

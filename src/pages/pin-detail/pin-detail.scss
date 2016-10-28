@@ -1,0 +1,30 @@
+page-pin-detail {
+.pinDetail-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+  }
+
+  /*.pinDetail-openNowMessage {
+    color: green;
+    font-weight: bold;
+  }*/
+
+  .pinDetail-line {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+
+  .pinDetail-missingInfo {
+    font-style: italic;
+  }
+
+  .pinDetail-map {
+    margin-left: 15%;
+    width: 70%;
+    height: 200px;
+    border: 0;
+  }
+}
