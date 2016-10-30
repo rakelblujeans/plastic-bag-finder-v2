@@ -10,8 +10,10 @@ import { PinManager } from '../../shared/services/pin-manager.service';
   templateUrl: 'pin-detail.html'
 })
 export class PinDetailPage {
-  pinKey: string;
   pin: any;
+  pinKey: string;
+  isApproved: boolean = false;
+  googleMapsKey: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       private pinManager: PinManager, private domSanitizer : DomSanitizer) {

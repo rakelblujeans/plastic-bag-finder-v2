@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+
+import { ConnectivityMonitor } from '../shared/services/connectivity-monitor.service';
+import { GoogleMapsLoader } from '../shared/services/google-maps-loader.service';
+import { PinManager } from '../shared/services/pin-manager.service';
+import { UserManager } from '../shared/services/user-manager.service';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -24,6 +29,17 @@ const firebaseAuthConfig = {
   remember: 'default'
 }
 
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'e0e05f46'
+  },
+  'auth': {
+    'google': {
+      'webClientId': '467952951078-7qldjnf2ofp1k5ossdmuc4j7cs0i2u9t.apps.googleusercontent.com'
+    }
+  }
+}
+
 @NgModule({
   declarations: [
     MyApp,
@@ -36,6 +52,7 @@ const firebaseAuthConfig = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings),
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
@@ -48,6 +65,6 @@ const firebaseAuthConfig = {
     PinDetailPage,
     TabsPage
   ],
-  providers: []
+  providers: [ConnectivityMonitor, GoogleMapsLoader, PinManager, UserManager] // NavController
 })
 export class AppModule {}

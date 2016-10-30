@@ -5,14 +5,16 @@ import { FirebaseListObservable } from 'angularfire2';
 import { PinManager } from '../../shared/services/pin-manager.service';
 import { PinDetailPage } from '../pin-detail/pin-detail';
 
+declare var google;
+
 @Component({
   selector: 'page-pin-list',
   templateUrl: 'pin-list.html'
 })
 export class PinListPage {
   newPin: any = {};
-  approvedPins: FirebaseListObservable;
-  submittedPins: FirebaseListObservable;
+  approvedPins: FirebaseListObservable<any>;
+  submittedPins: FirebaseListObservable<any>;
   formExpanded: boolean = false;
   autocomplete: any;
   place: any; // value taken from the chosen autocomplete entry
@@ -32,8 +34,10 @@ export class PinListPage {
      };
 
     const element = this.elementRef.nativeElement.querySelector('input[name=placeQuery]');
-    this.autocomplete = new window.google.maps.places.Autocomplete(element, options);
-    window.google.maps.event.addListener(
+    // console.log('WINDOW GOOGLE', window.google);
+    // console.log('WINDOW', window);
+    this.autocomplete = new google.maps.places.Autocomplete(element, options);
+    google.maps.event.addListener(
         this.autocomplete, 'place_changed', this.onPlaceChanged.bind(this));
   };
 
@@ -79,6 +83,7 @@ export class PinListPage {
     // if (user) {
     //   return this.pinManager.isFavorite(pin, user.uid);
     // }
+    return false;
   }
 
   openAddPanel(): void {
@@ -122,9 +127,10 @@ export class PinListPage {
     // }
     // console.log(this.admin);
     // return this.admin;
+    return false;
   }
 
-  formatDate(dateMillis: any): void {
+  formatDate(dateMillis: any): string {
     const date = new Date(dateMillis);
     const options = {
       year: 'numeric',

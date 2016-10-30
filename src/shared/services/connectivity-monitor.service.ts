@@ -1,28 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { LoadingController, Platform } from 'ionic-angular';
 import { Network } from "ionic-native";
 
 declare var window;
+declare var Connection;
 
 @Injectable()
 export class ConnectivityMonitor {
   disconnectSubscription: any;
   connectSubscription: any;
   onDevice: boolean;
+  loader: any;
 
-  constructor(public platform: Platform) {
-    this.platform = platform;
+  constructor(private platform: Platform, private loadingCtrl: LoadingController) {
     this.onDevice = this.platform.is('cordova');
-  }
-
-  private onlineBrowserListener(e: any): void {
-    // this.enableInteraction();
-    console.log("went online");
-  }
-
-  private offlineBrowserListener(e: any): void {
-    // this.disableInteraction();
-    console.log("went offline");
   }
 
   startWatching(): void {
@@ -31,11 +22,14 @@ export class ConnectivityMonitor {
       // watch network for a disconnect
       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
         console.log('network was disconnected :-(');
+        this.openLoadingModal();
       });
 
       // watch network for a connection
       this.connectSubscription = Network.onConnect().subscribe(() => {
         console.log('network connected!'); 
+         this.closeLoadingModal();
+
         // We just got a connection but we need to wait briefly
         // before we determine the connection type.  Might need to wait 
         // prior to doing any api requests as well.
@@ -46,8 +40,8 @@ export class ConnectivityMonitor {
         }, 3000);
       });
     } else {
-      window.addEventListener("online", this.onlineBrowserListener, false);
-      window.addEventListener("offline", this.offlineBrowserListener, false);
+      window.addEventListener("online", this.onlineBrowserListener.bind(this), false);
+      window.addEventListener("offline", this.offlineBrowserListener.bind(this), false);
     }
   }
 
@@ -71,6 +65,28 @@ export class ConnectivityMonitor {
     }
   }
 
-  // enableInteraction() {}
-  // disableInteraction(): any {}
+  private openLoadingModal() {
+    this.loader = this.loadingCtrl.create({
+      content: "Network connection lost"
+    });
+    this.loader.present();
+  }
+
+  private closeLoadingModal() {
+    if (this.loader) {
+      this.loader.dismissAll();
+    }
+  }
+
+  private onlineBrowserListener(e: any): void {
+    // this.enableInteraction();
+    console.log("went online");
+    this.closeLoadingModal();
+  }
+
+  private offlineBrowserListener(e: any): void {
+    // this.disableInteraction();
+    console.log("went offline");
+    this.openLoadingModal();
+  }
 }

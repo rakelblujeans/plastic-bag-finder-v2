@@ -1,6 +1,8 @@
 page-pin-detail {
-.pinDetail-content {
+  .pinDetail-content {
+    margin-left: 15%;
     display: flex;
+    width: 70%;
     flex-direction: column;
     justify-content: center;
     align-content: center;
@@ -22,8 +24,6 @@ page-pin-detail {
   }
 
   .pinDetail-map {
-    margin-left: 15%;
-    width: 70%;
     height: 200px;
     border: 0;
   }

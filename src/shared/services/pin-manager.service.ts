@@ -28,7 +28,7 @@ export class PinManager {
   add(place: any): void {
     // console.log('inside adding', place);
     // console.log('submittedPins', submittedPins);
-    const newPin = {};
+    const newPin = {address: null};
     this.setData(newPin, place);
     if (newPin.address !== '' && newPin.address !== null) {
       this.submittedPins.push(newPin);
@@ -78,7 +78,7 @@ export class PinManager {
     this.approvedPins.remove(pin.$key);
   }
 
-  isApproved(pin: any): void {
+  isApproved(pin: any): boolean {
     return pin.status === Status.APPROVED;
   }
 
@@ -149,7 +149,7 @@ export class PinManager {
     }
   }
 
-  private addToFavorites(pin: any, uid: any): void {
+  /*private addToFavorites(pin: any, uid: any): void {
     if (!pin.favorites) {
       pin.favorites = [];
     }
@@ -159,9 +159,9 @@ export class PinManager {
       pin.favorites.push(uid);
       this.save(pin);
     }
-  }
+  }*/
 
-  private removeFromFavorites(pin: any, uid: any): void {
+  /*private removeFromFavorites(pin: any, uid: any): void {
     if (!pin || !pin.favorites) {
       return;
     }
@@ -171,7 +171,7 @@ export class PinManager {
       pin.favorites.splice(idx, 1);
       this.save(pin);
     }
-  }
+  }*/
 
   isFavorite(pin: any, uid: any): boolean {
     if (!pin || !pin.favorites) {
