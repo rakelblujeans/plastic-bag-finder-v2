@@ -36,8 +36,8 @@
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <allow-navigation href="*" />
     <plugin name="cordova-plugin-googleplus" spec="~5.1.1">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.874099502888-23sf3hfhappcqur5agmanq83a0hg8cj2" />
     </plugin>
-    <allow-navigation href="*" />
 </widget>

@@ -9,14 +9,14 @@ declare let google;
 @Injectable()
 export class PinMap {
   private map: any = null;
+  private mapElement: any;
   private markers: Array<any> = [];
   private infoWindow: any = null;
 
-  constructor(public googleMapsLoader: GoogleMapsLoader, public pinManager: PinManager) {
-    this.googleMapsLoader = googleMapsLoader;
-  }
+  constructor(private googleMapsLoader: GoogleMapsLoader, private pinManager: PinManager) {}
 
   loadMap(mapElement: any): void {
+    console.log('LOAD MAP');
     this.mapElement = mapElement;
     this.googleMapsLoader.init(this.initMap.bind(this));
   }
@@ -26,7 +26,7 @@ export class PinMap {
     //   timeout: 10000,
     //   enableHighAccuracy: true
     // };
-
+    console.log('PIN MAP - INIT MAP', google);
     Geolocation.getCurrentPosition().then((position) => {
       const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.setMapWithLocation(latLng);

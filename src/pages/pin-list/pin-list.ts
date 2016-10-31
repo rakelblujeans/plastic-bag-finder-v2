@@ -19,6 +19,9 @@ export class PinListPage {
   autocomplete: any;
   place: any; // value taken from the chosen autocomplete entry
 
+  @Output() onPlaceChanged: EventEmitter<any> = new EventEmitter();
+
+
   constructor(private navController: NavController, private elementRef:ElementRef,
       private pinManager: PinManager) {
   }
@@ -34,11 +37,19 @@ export class PinListPage {
      };
 
     const element = this.elementRef.nativeElement.querySelector('input[name=placeQuery]');
-    // console.log('WINDOW GOOGLE', window.google);
-    // console.log('WINDOW', window);
     this.autocomplete = new google.maps.places.Autocomplete(element, options);
     google.maps.event.addListener(
         this.autocomplete, 'place_changed', this.onPlaceChanged.bind(this));
+
+    // need to stop prop of the touchend event
+    // if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
+      setTimeout(() => {
+          const container = document.getElementsByClassName('pac-container')[0];
+          container.addEventListener('touchend', (e) => {
+              e.stopImmediatePropagation();
+          });
+      }, 500);
+    // }
   };
 
   flag(pin: any): void {
@@ -103,15 +114,16 @@ export class PinListPage {
   }
 
   onPlaceChanged(): void {
+    console.log('IN------');
     const place = this.autocomplete.getPlace();
     if (place.geometry) {
       this.place = place;
-      // console.log('onPlaceChanged', this.place);
+      console.log('onPlaceChanged', this.place);
     }
   }
 
   submitForm(): void {
-    console.log('submitted');
+    console.log('submitted', this.place);
     if (this.place && this.place.adr_address) {
       this.pinManager.add(this.place);
     }

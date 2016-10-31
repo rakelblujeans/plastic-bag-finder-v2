@@ -16,39 +16,32 @@ export class GoogleMapsLoader {
 
   init(postLoadCb): void {
     this.postLoadCallback = postLoadCb;
-    // this.connectivityMonitor.disableInteraction();
-
-    if (typeof window.google == "undefined" ||
-        typeof google == "undefined" ||
-        typeof google.maps == "undefined") {
+    // this.connectivityMonitor.disableInteractivity();
+    const googleMapsLoaded = typeof google !== "undefined"; // || typeof google.maps !== "undefined";
+    const isOnline = this.connectivityMonitor.isOnline();
+    if (isOnline && !googleMapsLoaded) {
       // console.warn("Google Maps SDK needs to be loaded", window.google);
-      if (this.connectivityMonitor.isOnline()) {
-        this.loadGoogleMaps();
-      }
-    }
-    else {
-      if (this.connectivityMonitor.isOnline()) {
+      this.loadGoogleMaps();
+    } else if (isOnline && googleMapsLoaded) {
         if (this.postLoadCallback) {
           this.postLoadCallback();
         }
-        // this.connectivityMonitor.enableInteraction();
-      } else {
-        // this.connectivityMonitor.disableInteraction();
-      }
+        this.connectivityMonitor.enableInteractivity();
+    } else if (!isOnline) {
+        this.connectivityMonitor.disableInteractivity();
     }
   }
 
   private loadGoogleMaps(): void {
-    // this.connectivityMonitor.disableInteraction('Loading google maps');
+    this.connectivityMonitor.disableInteractivity('Loading google maps');
     // This function will be called once the SDK has been loaded
     window.googleMapsCb = () => {
       window.google = google;
       if (this.postLoadCallback) {
         this.postLoadCallback();
-        // this.connectivityMonitor.enableInteraction();
-      } else {
-        // this.connectivityMonitor.enableInteraction();
+
       }
+      this.connectivityMonitor.enableInteractivity();
     };
 
     // Create a script element to insert into the page
@@ -68,12 +61,4 @@ export class GoogleMapsLoader {
 
     document.body.appendChild(script);
   }
-
-  // private checkLoaded(): void {
-  //   if (typeof google == "undefined" || typeof google.maps == "undefined") {
-  //     this.loadGoogleMaps();
-  //   } else {
-  //     // connectivityMonitor.enableInteraction();
-  //   }
-  // }
 }

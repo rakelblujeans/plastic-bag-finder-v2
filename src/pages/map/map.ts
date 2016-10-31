@@ -12,9 +12,12 @@ export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
 
-  constructor(private pinMap: PinMap) {}
+  constructor(private pinMap: PinMap) {
+  }
 
   ionViewDidLoad() {
-    this.pinMap.loadMap(this.mapElement.nativeElement);
+    setTimeout(() => {
+      this.pinMap.loadMap(this.mapElement.nativeElement);
+    }, 2000);
   }
 }

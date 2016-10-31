@@ -59,15 +59,24 @@ export class ConnectivityMonitor {
 
   isOnline(): boolean {
     if (this.onDevice && Network.connection) {
-      return Network.connection === Connection.NONE;
+      console.log('--ONLINE?', Network.connection !== Connection.NONE);
+      return Network.connection !== Connection.NONE;
     } else {
       return navigator.onLine;
     }
   }
 
-  private openLoadingModal() {
+  disableInteractivity(message?: string) {
+    this.openLoadingModal(message);
+  }
+
+  enableInteractivity() {
+    this.closeLoadingModal();
+  }
+
+  private openLoadingModal(message?: string) {
     this.loader = this.loadingCtrl.create({
-      content: "Network connection lost"
+      content: message || "Network connection lost"
     });
     this.loader.present();
   }
