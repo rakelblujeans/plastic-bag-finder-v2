@@ -1,4 +1,4 @@
-<ion-header>
+ <ion-header>
   <ion-navbar color="halloween">
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
@@ -40,7 +40,7 @@
       (No hours available)
     </p>
 
-    <iframe class="pinDetail-map"frameborder="0"
+    <iframe class="pinDetail-map" height="200" frameborder="0"
         [src]="sanitizeUrl('https://www.google.com/maps/embed/v1/place?q=place_id:' +
             (pin | async)?.placeId + '&key=' + googleMapsKey)"
         allowfullscreen>

@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2';
 
@@ -12,45 +12,106 @@ declare var google;
   templateUrl: 'pin-list.html'
 })
 export class PinListPage {
-  newPin: any = {};
+  @ViewChild('fakeMap') fakeMapEl: ElementRef;
+  // Locations approved by a moderator
   approvedPins: FirebaseListObservable<any>;
+  // Locations submitted but still awaiting approval
   submittedPins: FirebaseListObservable<any>;
+  // Is the form used for entering new locations currently visible?
   formExpanded: boolean = false;
-  autocomplete: any;
-  place: any; // value taken from the chosen autocomplete entry
-
-  @Output() onPlaceChanged: EventEmitter<any> = new EventEmitter();
-
-
-  constructor(private navController: NavController, private elementRef:ElementRef,
-      private pinManager: PinManager) {
+  // Value taken from the vetted autocomplete entry. Contains complete set of place details
+  place: any;
+  // Has the selected entry been vetted?
+  isPlaceSubmitable: boolean = false;
+  // Options returned by Google's autocomplete service
+  predictions: Array<any> = [];
+  // Contains the value display inside our searchbar's textbox
+  autocomplete = {
+    query: ''
   }
 
-  // ngOnInit is problematic. views are cached/loaded once, so it will never get hit again.
+  constructor(private navController: NavController, private elementRef:ElementRef,
+      private zone: NgZone, private pinManager: PinManager) {
+  }
+
+  // ngOnInit is problematic. Views are cached/loaded once, so it will never get hit again.
   ionViewDidLoad() {
     this.approvedPins = this.pinManager.approvedPins;
     this.submittedPins = this.pinManager.submittedPins;
+  }
 
-    const options = {
-      types: [],
-      componentRestrictions: {country: 'usa'}
-     };
+  updateSearch() {
+    const service = new google.maps.places.AutocompleteService();
+    if (this.autocomplete.query === '') {
+      this.predictions = [];
+      return;
+    }
 
-    const element = this.elementRef.nativeElement.querySelector('input[name=placeQuery]');
-    this.autocomplete = new google.maps.places.Autocomplete(element, options);
-    google.maps.event.addListener(
-        this.autocomplete, 'place_changed', this.onPlaceChanged.bind(this));
+    service.getPlacePredictions({
+      input: this.autocomplete.query,
+      componentRestrictions: {
+        country: 'us'
+      }
+    }, (predictions, status) => {
+      this.zone.run(() => {
+        console.log(predictions);
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          this.predictions = predictions
+        }
+      });
+    });
+  }
 
-    // need to stop prop of the touchend event
-    // if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-      setTimeout(() => {
-          const container = document.getElementsByClassName('pac-container')[0];
-          container.addEventListener('touchend', (e) => {
-              e.stopImmediatePropagation();
-          });
-      }, 500);
-    // }
-  };
+  onPlaceClicked(place) {
+    // console.log('onPlaceClicked', place.place_id);
+    if (!place || !place.place_id) {
+      console.log('Error: No place or place_id found');
+      return;
+    }
+
+    const service = new google.maps.places.PlacesService(this.fakeMapEl.nativeElement);
+    service.getDetails({
+      placeId: place.place_id
+    }, (place, status) => {
+      this.zone.run(() => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          this.place = place;
+          // we've clicked on a valid autocomplete option, so we can now save this entry
+          this.isPlaceSubmitable = true;
+        }
+
+        // update input textbox
+        this.autocomplete.query = this.place.formatted_address;
+        // clear autocompleted list
+        this.predictions = [];
+      });
+    });
+  }
+
+  openAddPanel(): void {
+    if (!this.formExpanded) {
+      this.place = {};
+      this.autocomplete.query = '';
+      this.formExpanded = true;
+      this.isPlaceSubmitable = false;
+    }
+  }
+
+  cancelForm(event: any): void {
+    // console.log('canceled');
+    this.formExpanded = false;
+    // console.log('Event', event);
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  submitForm(): void {
+    // console.log('submitted', this.place);
+    if (this.place && this.place.adr_address) {
+      this.pinManager.add(this.place);
+      this.formExpanded = false;
+    }
+  }
 
   flag(pin: any): void {
     this.pinManager.flag(pin);
@@ -63,6 +124,7 @@ export class PinListPage {
   }
 
   remove(pin: any): void {
+    console.log('remove', pin);
     this.pinManager.remove(pin);
   }
 
@@ -95,39 +157,6 @@ export class PinListPage {
     //   return this.pinManager.isFavorite(pin, user.uid);
     // }
     return false;
-  }
-
-  openAddPanel(): void {
-    if (!this.formExpanded) {
-      this.newPin = {};
-      this.place = {};
-      this.formExpanded = true;
-    }
-  }
-
-  cancelForm(event: any): void {
-    console.log('canceled');
-    this.formExpanded = false;
-    console.log('Event', event);
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  onPlaceChanged(): void {
-    console.log('IN------');
-    const place = this.autocomplete.getPlace();
-    if (place.geometry) {
-      this.place = place;
-      console.log('onPlaceChanged', this.place);
-    }
-  }
-
-  submitForm(): void {
-    console.log('submitted', this.place);
-    if (this.place && this.place.adr_address) {
-      this.pinManager.add(this.place);
-    }
-    this.formExpanded = false;
   }
 
   isAdmin(): boolean {

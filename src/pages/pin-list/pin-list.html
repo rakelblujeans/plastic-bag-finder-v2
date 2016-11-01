@@ -20,19 +20,23 @@
           'is-visible': formExpanded,
           'is-hidden': !formExpanded
         }">
-      <form #form="ngForm" novalidate>
+
+      <ion-searchbar placeholder="Search" [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()">
+      </ion-searchbar>
+
+      <ion-list>
+        <ion-item *ngFor="let place of predictions" (click)="onPlaceClicked(place)">
+          {{place.description}}
+        </ion-item>
+      </ion-list>
+
+      <!-- dummy attribute required to make a request for place details -->
+      <div #fakeMap id="fakeMap"></div>
+
       <ion-list no-lines>
         <ion-item>
-          <ion-label floating>Enter new drop-off location</ion-label>
-          <ion-input type="text" id="placeQuery" name="placeQuery" minlength="2" required
-              [(ngModel)]="newPin.place" (keyup.enter)="$event.preventDefault()"
-              (blur)="$event.preventDefault()">
-          </ion-input>
-        </ion-item>
-
-        <ion-item>
           <button type="submit" ion-button color="secondary" class="pins-button"
-              [disabled]="!form.form.valid" (click)="submitForm()">
+              [disabled]="!isPlaceSubmitable" (click)="submitForm()">
             <ion-icon name="checkmark-circle"></ion-icon>
           </button>
 
@@ -41,7 +45,7 @@
           </button>
         </ion-item>
       </ion-list>
-    </form>
+
     </ion-card-content>
   </ion-card>
 
@@ -128,7 +132,7 @@
           <ion-icon name="star-outline"></ion-icon>
         </button>
 
-        <a (click)="viewDetail(pin.$key, false)" item-right>View</a>
+        <a (click)="viewDetail(pin.$key, true)" item-right>View</a>
       </ion-item>
     </ion-item-group>
   </ion-list>

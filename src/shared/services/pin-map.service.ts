@@ -16,17 +16,11 @@ export class PinMap {
   constructor(private googleMapsLoader: GoogleMapsLoader, private pinManager: PinManager) {}
 
   loadMap(mapElement: any): void {
-    console.log('LOAD MAP');
     this.mapElement = mapElement;
     this.googleMapsLoader.init(this.initMap.bind(this));
   }
 
   initMap(): void {
-    // const options = {
-    //   timeout: 10000,
-    //   enableHighAccuracy: true
-    // };
-    console.log('PIN MAP - INIT MAP', google);
     Geolocation.getCurrentPosition().then((position) => {
       const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.setMapWithLocation(latLng);

@@ -36,6 +36,7 @@ export class PinManager {
   }
 
   remove(pin: any): void {
+    console.log('status', pin.status);
     if (pin.status === Status.APPROVED) {
       this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
@@ -132,7 +133,7 @@ export class PinManager {
     }
 
     pin.favorites = [];
-    pin.status = 'submitted';
+    pin.status = Status.SUBMITTED;
     pin.createdAt = Date.now();
     pin.updatedAt = Date.now();
   }
