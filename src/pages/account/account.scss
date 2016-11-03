@@ -1,3 +1,48 @@
 page-account {
+  .account-content {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 
+  .account-centeredContent {
+    flex: 1;
+    align-self: stretch;
+  }
+
+  .account-title {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 20px;
+    flex: 1;
+  }
+
+  .account-authBtn {}
+
+  .account-footer {
+    flex: 1;
+    padding-top: 40px;
+    text-align: center;
+  }
+
+  .account-legalDisclaimer {
+    color: gray;
+    font-size: 10px;
+  }
+
+  .account-bagImg {
+    margin-top: 50px;
+    height: 150px;
+  }
+
+  @media (min-width: 480px) {
+    .account-centeredContent {
+      margin-left: 20%;
+      margin-right: 20%;
+      width: 60%;
+    }
+  }
 }

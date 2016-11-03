@@ -38,6 +38,6 @@
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
     <allow-navigation href="*" />
     <plugin name="cordova-plugin-googleplus" spec="~5.1.1">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.874099502888-23sf3hfhappcqur5agmanq83a0hg8cj2" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.635356205993-b8thtn5vod1plkn9t6dhgkv8ttot6f16" />
     </plugin>
 </widget>

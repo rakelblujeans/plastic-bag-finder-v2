@@ -35,7 +35,7 @@ const cloudSettings: CloudSettings = {
   },
   'auth': {
     'google': {
-      'webClientId': '467952951078-7qldjnf2ofp1k5ossdmuc4j7cs0i2u9t.apps.googleusercontent.com'
+      'webClientId': '635356205993-r9sq4cv4pp6io3uopk95h56b7tdc0l4c.apps.googleusercontent.com'
     }
   }
 }
