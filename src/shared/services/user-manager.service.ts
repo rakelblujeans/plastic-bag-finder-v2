@@ -1,31 +1,41 @@
 import { Injectable } from '@angular/core';
-import { GoogleAuth, User } from '@ionic/cloud-angular';
+import { Auth, User, IDetailedError } from '@ionic/cloud-angular';
 
-// TODO: See Xavier's app for a full Ionic Cloud Auth integration
+/* Google authentication is poorly documented (as of the time of this writing) so we've opted
+ * to instead implement Email auth.
+ * Documentation: https://docs.ionic.io/services/auth/
+ */
 
 @Injectable()
 export class UserManager {
-  constructor(private googleAuth: GoogleAuth, private user: User) {
-    // this.af = af;
-    // this.af.auth.subscribe(auth => console.log(auth));
+  constructor(public auth: Auth, public user: User) {
     // this.approvedPins = this.af.database.list('/pins/approved');
   }
 
-  login() {
-    this.googleAuth.login().then((success) => {
-      console.log('logged in', success);
-    }, (error) => {
-      console.log('ERROR logging in', error);
+  login(userDetails) {
+    return this.auth.login('basic', userDetails).then(() => {
+      return {error: false, user: this.user};
+    }, (err: IDetailedError<string>) => {
+      if (err.message.toLowerCase().startsWith('email and password are required')) {
+        return {error: true, message: 'Email and password are required'};
+      } else {
+        return {error: true, message: 'Sorry, try again'};
+      }
+    });
+  }
+
+  signup(userDetails) {
+    return this.auth.signup(userDetails).then(() => {
+      return {error: false, user: this.user};
+    }, (err: IDetailedError<string[]>) => {
+      for (let e of err.details) {
+        return {error: true, message: e};
+      }
     });
   }
 
   logout(): void {
-    console.log('logout');
-    this.googleAuth.logout();
-  }
-
-  closeAccount(): void {
-    // TODO
+    return this.auth.logout();
   }
 
   isAdmin(): boolean {

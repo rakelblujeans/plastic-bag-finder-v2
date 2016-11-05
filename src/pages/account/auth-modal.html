@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <span *ngIf="isSignup">Create an Account</span>
+      <span *ngIf="!isSignup">Login</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="email" [value]="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" [value]="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="danger" *ngIf="errorMsg">{{errorMsg}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-buttons start>
+    <button ion-button large color="halloween" (click)="submit($event)"></button>
+    <button ion-button large color="halloween" (click)="dismiss()">Cancel</button>
+  </ion-buttons>
+
+</ion-content>

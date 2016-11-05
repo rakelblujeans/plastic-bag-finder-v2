@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
-import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2'; // AuthProviders, AuthMethods
 
 import { ConnectivityMonitor } from '../shared/services/connectivity-monitor.service';
 import { GoogleMapsLoader } from '../shared/services/google-maps-loader.service';
@@ -11,6 +11,7 @@ import { UserManager } from '../shared/services/user-manager.service';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AccountPage } from '../pages/account/account';
+import { AuthModalPage } from '../pages/account/auth-modal';
 import { MapPage } from '../pages/map/map';
 import { PinListPage } from '../pages/pin-list/pin-list';
 import { PinDetailPage } from '../pages/pin-detail/pin-detail';
@@ -22,12 +23,6 @@ export const firebaseConfig = {
   databaseURL: 'https://plastic-bag-finder-1346.firebaseio.com',
   storageBucket: "plastic-bag-finder-1346.appspot.com"
 };
-
-const firebaseAuthConfig = {
-  provider: AuthProviders.Google,
-  method: AuthMethods.OAuthToken,
-  remember: 'default'
-}
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -45,6 +40,7 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     AccountPage,
+    AuthModalPage,
     MapPage,
     PinListPage,
     PinDetailPage,
@@ -53,18 +49,19 @@ const cloudSettings: CloudSettings = {
   imports: [
     IonicModule.forRoot(MyApp),
     CloudModule.forRoot(cloudSettings),
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     AccountPage,
+    AuthModalPage,
     MapPage,
     PinListPage,
     PinDetailPage,
     TabsPage
   ],
-  providers: [ConnectivityMonitor, GoogleMapsLoader, PinManager, UserManager] // NavController
+  providers: [ConnectivityMonitor, GoogleMapsLoader, PinManager, UserManager]
 })
 export class AppModule {}

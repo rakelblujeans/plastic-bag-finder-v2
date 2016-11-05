@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Auth } from '@ionic/cloud-angular';
+import { ModalController, NavController } from 'ionic-angular';
 
+import { AuthModalPage } from './auth-modal';
 import { UserManager } from '../../shared/services/user-manager.service';
 
 @Component({
@@ -10,23 +12,35 @@ import { UserManager } from '../../shared/services/user-manager.service';
 export class AccountPage {
   user: any;
 
-
-  constructor(public navCtrl: NavController, private userManager: UserManager) {
-    this.userManager = userManager;
-    //  $scope.offAuthListener = $scope.Auth.$onAuthStateChanged(function(firebaseUser) {
-    //   $scope.user = firebaseUser;
-    // });
+  constructor(private auth: Auth, private modalCtrl: ModalController,
+      private navCtrl: NavController, private userManager: UserManager) {
+    if (!this.auth.isAuthenticated()) {
+      this.user = null;
+    }
   }
 
-  login(): void {
-    this.userManager.login();
+  openSignupModal(): void {
+    const modal = this.modalCtrl.create(AuthModalPage, {
+      onSubmit: this.onSubmit.bind(this),
+      isSignup: true
+    });
+    modal.present();
+  }
+
+  openLoginModal(): void {
+    const modal = this.modalCtrl.create(AuthModalPage, {
+      onSubmit: this.onSubmit.bind(this),
+      isSignup: false
+    });
+    modal.present();
+  }
+
+  onSubmit(user): void {
+    this.user = user;
   }
 
   logout(): void {
     this.userManager.logout();
-  }
-
-  closeAccount(): void {
-    this.userManager.closeAccount();
+    this.user = null;
   }
 }
