@@ -9,7 +9,6 @@ import { PinManager } from '../shared/services/pin-manager.service';
 import { UserManager } from '../shared/services/user-manager.service';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { AccountPage } from '../pages/account/account';
 import { AuthModalPage } from '../pages/account/auth-modal';
 import { MapPage } from '../pages/map/map';
@@ -46,7 +45,6 @@ const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     AccountPage,
     AuthModalPage,
     MapPage,
@@ -62,7 +60,6 @@ const cloudSettings: CloudSettings = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     AccountPage,
     AuthModalPage,
     MapPage,
