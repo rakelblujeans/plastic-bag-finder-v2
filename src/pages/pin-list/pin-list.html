@@ -74,20 +74,22 @@
           <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- unflag -->
-        <button ion-button outline color="danger" (click)="unflag(pin)" *ngIf="pin.flagged && userIsAdmin">
+        <button ion-button outline color="danger" (click)="unflag(pin)"
+            *ngIf="pin.flagged && userIsAdmin">
           <ion-icon name="flag"></ion-icon>
         </button>
         <!-- unapprove -->
         <button ion-button outline (click)="unapprove(pin)" *ngIf="isApproved(pin) && userIsAdmin">
-          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <ion-icon name="checkmark-circle"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline color="favorite" (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
-          <ion-icon name="star"></ion-icon>
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+          <ion-icon name="star-outline"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline (click)="unfavorite(pin)" *ngIf="isFavorite(pin)">
-          <ion-icon name="star-outline"></ion-icon>
+        <button ion-button outline color="favorite" (click)="unfavorite(pin)"
+            *ngIf="isFavorite(pin)">
+          <ion-icon name="star"></ion-icon>
         </button>
 
          <a (click)="viewDetail(pin.$key, true)" item-right>View</a>
@@ -121,16 +123,16 @@
         </button>
         <!-- approve -->
         <button ion-button outline (click)="approve(pin)" *ngIf="!isApproved(pin)">
-          <ion-icon name="checkmark-circle"></ion-icon>
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline color="favorite" (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
-          <ion-icon name="star"></ion-icon>
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+          <ion-icon name="star-outline"></ion-icon>
         </button>
         <!-- unfavorite -->
-        <button ion-button outline (click)="unfavorite(pin)"
+        <button ion-button outline color="favorite" (click)="unfavorite(pin)"
             *ngIf="isFavorite(pin)">
-          <ion-icon name="star-outline"></ion-icon>
+          <ion-icon name="star"></ion-icon>
         </button>
 
         <a (click)="viewDetail(pin.$key, true)" item-right>View</a>

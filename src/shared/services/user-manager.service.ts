@@ -22,7 +22,8 @@ export class UserManager {
   }
 
   getUserRole(email, onComplete?) {
-    this.af.database.object('/userRoles/' + this.sanitizeUsername(email),
+    const userId = this.sanitizeUsername(email);
+    this.af.database.object('/userRoles/' + userId,
       {
         preserveSnapshot: true
       }).subscribe((snapshots) => {
@@ -30,6 +31,8 @@ export class UserManager {
         snapshots.forEach((snapshot) => {
           this.currentUser[snapshot.key] = snapshot.val();
         });
+
+        this.currentUser.id = userId;
 
         if (typeof onComplete === 'function') {
           onComplete({

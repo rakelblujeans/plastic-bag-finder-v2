@@ -145,39 +145,39 @@ export class PinManager {
     }
   }
 
-  // TODO
   addToFavorites(pin: FirebaseListObservable<any>, key: string): void {
     if (!pin.favorites) {
       pin.favorites = [];
     }
+    console.log('adding', pin, key);
 
     var idx = pin.favorites.indexOf(key);
-    if (idx == -1) {
+    if (idx === -1) {
       pin.favorites.push(key);
+      console.log('PUSHING KEY', pin.favorites);
       this.save(pin);
     }
   }
 
-  // TODO
   removeFromFavorites(pin: FirebaseListObservable<any>, key: string): void {
     if (!pin || !pin.favorites) {
       return;
     }
 
+    console.log('removing', pin, key);
     var idx = pin.favorites.indexOf(key);
-    if (idx > -1) {
+    if (idx !== -1) {
       pin.favorites.splice(idx, 1);
       this.save(pin);
     }
   }
 
-  // TODO
   isFavorite(pin: FirebaseListObservable<any>, key: string): boolean {
     if (!pin || !pin.favorites) {
       return false;
     }
 
-    return pin.favorites.indexOf(key) > -1;
+    return pin.favorites.indexOf(key) !== -1;
   }
 
 }
