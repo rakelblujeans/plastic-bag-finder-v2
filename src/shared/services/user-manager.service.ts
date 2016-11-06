@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, User, UserDetails, IDetailedError } from '@ionic/cloud-angular';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFire } from 'angularfire2';
 
 /* Google authentication is poorly documented (as of the time of this writing) so we've opted
  * to instead implement Email auth.
@@ -43,7 +43,7 @@ export class UserManager {
       });
   }
 
-  login(userDetails: UserDetails, onComplete: any): any {
+  login(userDetails: UserDetails, onComplete?: any): any {
     this.auth.login('basic', userDetails).then(() => {
       this.getUserRole(userDetails.email, onComplete);
       // this.af.database.object('/userRoles/' +

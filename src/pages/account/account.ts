@@ -11,9 +11,11 @@ import { UserManager } from '../../shared/services/user-manager.service';
 })
 export class AccountPage {
   user: any;
+  passwordResetUrl: any;
 
   constructor(private auth: Auth, private modalCtrl: ModalController,
       private navCtrl: NavController, private userManager: UserManager) {
+    this.passwordResetUrl = auth.passwordResetUrl;
   }
 
   ionViewWillEnter() {

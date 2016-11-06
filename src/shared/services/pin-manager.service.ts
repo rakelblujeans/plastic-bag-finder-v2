@@ -21,8 +21,6 @@ export class PinManager {
   }
 
   add(place: any): void {
-    // console.log('inside adding', place);
-    // console.log('submittedPins', submittedPins);
     const newPin = {address: null};
     this.setData(newPin, place);
     if (newPin.address !== '' && newPin.address !== null) {
@@ -30,8 +28,7 @@ export class PinManager {
     }
   }
 
-  remove(pin: FirebaseListObservable<any>): void {
-    // console.log('status', pin.status);
+  remove(pin: any): void {
     if (pin.status === Status.APPROVED) {
       this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
@@ -49,8 +46,7 @@ export class PinManager {
     this.save(pin);
   }
 
-  approve(pin: FirebaseListObservable<any>): void {
-    // console.log(pin, pin.$key);
+  approve(pin: any): void {
     pin.status = Status.APPROVED;
     pin.updatedAt = Date.now();
 
@@ -62,7 +58,7 @@ export class PinManager {
     this.submittedPins.remove(pin.$key);
   };
 
-  unapprove(pin: FirebaseListObservable<any>): void {
+  unapprove(pin: any): void {
     pin.status = Status.SUBMITTED;
     pin.updatedAt = Date.now();
 
@@ -79,12 +75,12 @@ export class PinManager {
   }
 
   // TODO: notify admin of flags through notifications
-  flag(pin: FirebaseListObservable<any>): void {
+  flag(pin: any): void {
     pin.flagged = true;
     this.save(pin);
   }
 
-  unflag(pin: FirebaseListObservable<any>): void {
+  unflag(pin: any): void {
     pin.flagged = false;
     this.save(pin);
   }
@@ -99,7 +95,7 @@ export class PinManager {
   }
 
   private setData(pin: any, place: any): void {
-    // console.log(pin, place);
+    // console.log(pin, place;
     pin.placeId = place.place_id;
     pin.lat = place.geometry.location.lat();
     pin.lng = place.geometry.location.lng();
@@ -133,7 +129,7 @@ export class PinManager {
     pin.updatedAt = Date.now();
   }
 
-  private save(pin: FirebaseListObservable<any>): void {
+  private save(pin: any): void {
     pin.updatedAt = Date.now();
     const key = pin.$key;
     delete pin.$key;
@@ -145,12 +141,10 @@ export class PinManager {
     }
   }
 
-  addToFavorites(pin: FirebaseListObservable<any>, key: string): void {
+  addToFavorites(pin: any, key: string): void {
     if (!pin.favorites) {
       pin.favorites = [];
     }
-    console.log('adding', pin, key);
-
     var idx = pin.favorites.indexOf(key);
     if (idx === -1) {
       pin.favorites.push(key);
@@ -159,12 +153,11 @@ export class PinManager {
     }
   }
 
-  removeFromFavorites(pin: FirebaseListObservable<any>, key: string): void {
+  removeFromFavorites(pin: any, key: string): void {
     if (!pin || !pin.favorites) {
       return;
     }
 
-    console.log('removing', pin, key);
     var idx = pin.favorites.indexOf(key);
     if (idx !== -1) {
       pin.favorites.splice(idx, 1);
@@ -172,12 +165,11 @@ export class PinManager {
     }
   }
 
-  isFavorite(pin: FirebaseListObservable<any>, key: string): boolean {
+  isFavorite(pin: any, key: string): boolean {
     if (!pin || !pin.favorites) {
       return false;
     }
 
     return pin.favorites.indexOf(key) !== -1;
   }
-
 }
