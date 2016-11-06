@@ -11,10 +11,11 @@ import { UserManager } from '../../shared/services/user-manager.service';
   templateUrl: 'pin-detail.html'
 })
 export class PinDetailPage {
-  pin: any;
+  pin: any = {};
   pinKey: string;
   isApproved: boolean = false;
   googleMapsKey: string = '';
+  mapUrl: string = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       private domSanitizer : DomSanitizer, private pinManager: PinManager,
@@ -25,7 +26,15 @@ export class PinDetailPage {
   }
 
   ionViewWillEnter() {
-    this.pin = this.pinManager.find(this.pinKey, this.isApproved);
+    this.pinManager.find(this.pinKey, this.isApproved).subscribe((snapshot) => {
+      if (!this.pin.placeId) {
+        this.pin = snapshot;
+        this.mapUrl = this.sanitizeUrl('https://www.google.com/maps/embed/v1/place?q=place_id:' +
+            this.pin.placeId + '&key=' + googleMapsKey);
+        console.log(this.pin, this.pin.placeId, this.mapUrl);
+        // TODO: no way to unsubscribe right now...
+      }
+    });
     // trigger a preload of user data
     this.userManager.getCurrentUser();
   }

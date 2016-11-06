@@ -12,6 +12,7 @@ export class PinMap {
   private mapElement: any;
   private markers: Array<any> = [];
   private infoWindow: any = null;
+  private user: any = null;
 
   constructor(private googleMapsLoader: GoogleMapsLoader, private pinManager: PinManager) {}
 

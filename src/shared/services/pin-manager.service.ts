@@ -24,7 +24,6 @@ export class PinManager {
         .subscribe((snapshots) => {
           this.addresses.length = 0;
           snapshots.forEach((snapshot) => {
-            console.log('test', snapshot.key);
             this.addresses.push(snapshot.key);
           });
       });
