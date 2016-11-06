@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
-import { AngularFireModule } from 'angularfire2'; // AuthProviders, AuthMethods
+import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
 import { ConnectivityMonitor } from '../shared/services/connectivity-monitor.service';
 import { GoogleMapsLoader } from '../shared/services/google-maps-loader.service';
@@ -17,6 +17,7 @@ import { PinListPage } from '../pages/pin-list/pin-list';
 import { PinDetailPage } from '../pages/pin-detail/pin-detail';
 import { TabsPage } from '../pages/tabs/tabs';
 
+// Firebase acts as our database
 export const firebaseConfig = {
   apiKey: "AIzaSyDroA4cCNvko84iVfc7mf_GNtqOOWeucIk",
   authDomain: "plastic-bag-finder-1346.firebaseapp.com",
@@ -24,6 +25,13 @@ export const firebaseConfig = {
   storageBucket: "plastic-bag-finder-1346.appspot.com"
 };
 
+// Use Firebase's anonymous auth sign-in so we can access our db
+const firebaseAuthConfig = {
+  provider: AuthProviders.Anonymous,
+  method: AuthMethods.Anonymous,
+}
+
+// Used for Ionic Cloud services. We use it for authentication only so far.
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': 'e0e05f46'
@@ -49,7 +57,7 @@ const cloudSettings: CloudSettings = {
   imports: [
     IonicModule.forRoot(MyApp),
     CloudModule.forRoot(cloudSettings),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
