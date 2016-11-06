@@ -22,6 +22,9 @@ $background-color:  #fff;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+$plastic: #42f4b6;
+$halloween: #FFC300;
+
 $colors: (
   primary:    #387ef5,
   secondary:  #32db64,
@@ -29,9 +32,10 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   favorite:   #FEEB07,
-  halloween:  #FFC300,
+  halloween:  $halloween,
+  plastic:    $plastic
 );
-
+// #147013 - dark green
 
 // App iOS Variables
 // --------------------------------------------------
@@ -45,7 +49,7 @@ $colors: (
 // Material Design only Sass variables can go here
 
 $tabs-md-background: #000000;
-$tabs-md-tab-color-active: #FFC300;
+$tabs-md-tab-color-active: $plastic;
 
 
 // App Windows Variables

@@ -122,7 +122,7 @@ export class PinListPage {
 
   flag(pin: any): void {
     this.pinManager.flag(pin);
-    // todo: moderate notifications, allow people to leave a
+    // TODO: Moderate notifications, allow people to leave a
     // comment on why they're flagging
   }
 

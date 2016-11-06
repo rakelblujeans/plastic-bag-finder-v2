@@ -7,8 +7,8 @@ enum Status {
   FLAGGED
 };
 
-// todo: limit by proximity to me?
-// todo: pagination?
+// TODO: limit by proximity to me?
+// TODO: pagination?
 
 @Injectable()
 export class PinManager {

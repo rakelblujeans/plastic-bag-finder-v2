@@ -13,17 +13,13 @@ export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
 
-  constructor(private pinMap: PinMap, private userManager: UserManager) {
-  }
+  constructor(private pinMap: PinMap, private userManager: UserManager) {}
 
-  ionViewDidLoad() {
-    setTimeout(() => {
-      this.pinMap.loadMap(this.mapElement.nativeElement);
-    }, 2000);
+  ionViewLoaded() {
+    this.pinMap.loadMap(this.mapElement.nativeElement, this.userManager.getCurrentUser());
   }
 
   ionViewWillEnter() {
-    // trigger a preload of user data
-    this.userManager.getCurrentUser();
+    this.pinMap.reloadMarkers(this.userManager.getCurrentUser());
   }
 }

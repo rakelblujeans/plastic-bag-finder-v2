@@ -32,6 +32,12 @@ export class PinMap {
     });
   }
 
+  reloadMarkers(user: any): void {
+    this.user = user;
+    this.clearMarkers();
+    this.loadMarkers();
+  }
+
   private setMapWithLocation(latLng: any): void {
     const mapOptions = {
       center: latLng,
@@ -120,11 +126,5 @@ export class PinMap {
       });
       this.infoWindow.open(this.map, marker);
     });
-  }
-
-  private reloadMarkers(user: any): void {
-    this.user = user;
-    this.clearMarkers();
-    this.loadMarkers();
   }
 }

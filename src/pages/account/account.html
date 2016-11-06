@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-navbar color="halloween">
+  <ion-navbar color="plastic">
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
-      Trick or Treat
+      Plastic Bag Recycling
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -10,13 +10,11 @@
 <ion-content>
   <div class="account-content">
     <div class="account-centeredContent">
+      <h1 *ngIf="user">Welcome back {{user.email}}!</h1>
       <img class="account-bagImg" src="assets/images/bag.svg">
-
-      <h1 *ngIf="user">Welcome back {{user.email}}</h1>
-      <br>
-      <h3 class="account-title">
-        Saw a place giving out king size snickers bars? Let the other kids know.
-      </h3>
+      <h4 class="account-title">
+        Get rid of that pile lurking underneath the sink. Recycle some plastic bags!
+      </h4>
 
       <p *ngIf="!user">
         You don't need an account to use the app, but if you create one you'll be able to
@@ -24,15 +22,15 @@
       </p>
 
       <p>
-        <button ion-button large color="halloween" (click)="openLoginModal()" *ngIf="!user">
+        <button ion-button large color="plastic" (click)="openLoginModal()" *ngIf="!user">
           Login
         </button>
 
-        <button ion-button large color="halloween" (click)="openSignupModal()" *ngIf="!user">
+        <button ion-button large color="plastic" (click)="openSignupModal()" *ngIf="!user">
           Sign up
         </button>
 
-        <button ion-button large color="halloween" (click)="logout()" *ngIf="user">
+        <button ion-button large color="plastic" (click)="logout()" *ngIf="user">
           Logout
         </button>
       </p>
