@@ -32,6 +32,7 @@ export class PinListPage {
   }
   user: any;
   userIsAdmin: boolean;
+  errorMsg: string = null;
 
   constructor(private navController: NavController, private elementRef:ElementRef,
       private zone: NgZone, private pinManager: PinManager, private userManager: UserManager) {
@@ -48,6 +49,8 @@ export class PinListPage {
   }
 
   updateSearch() {
+    this.errorMsg = null;
+
     const service = new google.maps.places.AutocompleteService();
     if (this.autocomplete.query === '') {
       this.predictions = [];
@@ -61,7 +64,7 @@ export class PinListPage {
       }
     }, (predictions, status) => {
       this.zone.run(() => {
-        console.log(predictions);
+        // console.log(predictions);
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           this.predictions = predictions
         }
@@ -72,7 +75,7 @@ export class PinListPage {
   onPlaceClicked(place) {
     // console.log('onPlaceClicked', place.place_id);
     if (!place || !place.place_id) {
-      console.log('Error: No place or place_id found');
+      // console.log('Error: No place or place_id found');
       return;
     }
 
@@ -105,6 +108,7 @@ export class PinListPage {
   }
 
   cancelForm(event: any): void {
+    this.errorMsg = null;
     // console.log('canceled');
     this.formExpanded = false;
     // console.log('Event', event);
@@ -113,10 +117,15 @@ export class PinListPage {
   }
 
   submitForm(): void {
+    this.errorMsg = null;
     // console.log('submitted', this.place);
     if (this.place && this.place.adr_address) {
-      this.pinManager.add(this.place);
-      this.formExpanded = false;
+      const succeeded = this.pinManager.add(this.place);
+      if (succeeded) {
+        this.formExpanded = false;
+      } else {
+        this.errorMsg = 'Error saving. Address must be unique.'
+      }
     }
   }
 
@@ -131,7 +140,7 @@ export class PinListPage {
   }
 
   remove(pin: any): void {
-    console.log('remove', pin);
+    // console.log('remove', pin);
     this.pinManager.remove(pin);
   }
 

@@ -14,18 +14,37 @@ enum Status {
 export class PinManager {
   submittedPins: FirebaseListObservable<any>;
   approvedPins: FirebaseListObservable<any>;
+  addresses: any = [];
 
   constructor(private af: AngularFire) {
     this.approvedPins = this.af.database.list('/pins/approved');
     this.submittedPins = this.af.database.list('/pins/submitted');
+
+    this.af.database.object('/addresses', {preserveSnapshot: true})
+        .subscribe((snapshots) => {
+          this.addresses.length = 0;
+          snapshots.forEach((snapshot) => {
+            console.log('test', snapshot.key);
+            this.addresses.push(snapshot.key);
+          });
+      });
   }
 
-  add(place: any): void {
+  // Each pin must be considered 'unique' in order to add successfully.
+  // Returns a boolean indicating success
+  add(place: any): boolean {
     const newPin = {address: null};
     this.setData(newPin, place);
     if (newPin.address !== '' && newPin.address !== null) {
-      this.submittedPins.push(newPin);
+      let found = this.addresses.some((address) => address === newPin.address);
+      if (!found) {
+        this.submittedPins.push(newPin);
+        this.af.database.object('/addresses/' + newPin.address).set({taken: true});
+        return true;
+      }
     }
+
+    return false;
   }
 
   remove(pin: any): void {

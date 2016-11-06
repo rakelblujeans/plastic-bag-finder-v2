@@ -26,7 +26,7 @@ export class PinMap {
       const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.setMapWithLocation(latLng);
     }, (err) => {
-      console.log(err);
+      // console.log(err);
       const latLng = new google.maps.LatLng(40.768037, -73.975705);
       this.setMapWithLocation(latLng);
     });

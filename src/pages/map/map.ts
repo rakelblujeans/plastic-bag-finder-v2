@@ -15,7 +15,7 @@ export class MapPage {
 
   constructor(private pinMap: PinMap, private userManager: UserManager) {}
 
-  ionViewLoaded() {
+  ionViewDidLoad() {
     this.pinMap.loadMap(this.mapElement.nativeElement, this.userManager.getCurrentUser());
   }
 

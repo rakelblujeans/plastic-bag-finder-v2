@@ -17,17 +17,17 @@ export class ConnectivityMonitor {
   }
 
   startWatching(): void {
-    console.log('start watching');
+    // console.log('start watching');
     if (this.onDevice) {
       // watch network for a disconnect
       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
-        console.log('network was disconnected :-(');
+        // console.log('network was disconnected :-(');
         this.openLoadingModal();
       });
 
       // watch network for a connection
       this.connectSubscription = Network.onConnect().subscribe(() => {
-        console.log('network connected!'); 
+        // console.log('network connected!'); 
          this.closeLoadingModal();
 
         // We just got a connection but we need to wait briefly
@@ -35,7 +35,7 @@ export class ConnectivityMonitor {
         // prior to doing any api requests as well.
         setTimeout(() => {
           if (Network.connection === 'wifi') {
-            console.log('we got a wifi connection, woohoo!');
+            // console.log('we got a wifi connection, woohoo!');
           }
         }, 3000);
       });
@@ -59,7 +59,7 @@ export class ConnectivityMonitor {
 
   isOnline(): boolean {
     if (this.onDevice && Network.connection) {
-      console.log('--ONLINE?', Network.connection !== Connection.NONE);
+      // console.log('--ONLINE?', Network.connection !== Connection.NONE);
       return Network.connection !== Connection.NONE;
     } else {
       return navigator.onLine;
@@ -89,13 +89,13 @@ export class ConnectivityMonitor {
 
   private onlineBrowserListener(e: any): void {
     // this.enableInteraction();
-    console.log("went online");
+    // console.log("went online");
     this.closeLoadingModal();
   }
 
   private offlineBrowserListener(e: any): void {
     // this.disableInteraction();
-    console.log("went offline");
+    // console.log("went offline");
     this.openLoadingModal();
   }
 }

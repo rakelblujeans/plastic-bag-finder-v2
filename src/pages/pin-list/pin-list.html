@@ -34,6 +34,10 @@
       <div #fakeMap id="fakeMap"></div>
 
       <ion-list no-lines>
+        <ion-item *ngIf="errorMsg">
+          <ion-label color="danger" *ngIf="errorMsg">{{errorMsg}}</ion-label>
+        </ion-item>
+
         <ion-item>
           <button type="submit" ion-button color="secondary" class="pins-button"
               [disabled]="!isPlaceSubmitable" (click)="submitForm()">
