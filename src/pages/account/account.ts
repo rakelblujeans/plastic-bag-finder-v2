@@ -14,9 +14,7 @@ export class AccountPage {
 
   constructor(private auth: Auth, private modalCtrl: ModalController,
       private navCtrl: NavController, private userManager: UserManager) {
-    if (!this.auth.isAuthenticated()) {
-      this.user = null;
-    }
+    this.user = this.userManager.getCurrentUser();
   }
 
   openSignupModal(): void {

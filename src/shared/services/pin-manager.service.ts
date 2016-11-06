@@ -12,17 +12,12 @@ enum Status {
 
 @Injectable()
 export class PinManager {
-  private af: any;
   submittedPins: FirebaseListObservable<any>;
   approvedPins: FirebaseListObservable<any>;
 
-  constructor(af: AngularFire) {
-    this.af = af;
+  constructor(private af: AngularFire) {
     this.approvedPins = this.af.database.list('/pins/approved');
     this.submittedPins = this.af.database.list('/pins/submitted');
-    //   query: {
-    //     orderByChild: 'timestamp'
-    //   }
   }
 
   add(place: any): void {
@@ -35,8 +30,8 @@ export class PinManager {
     }
   }
 
-  remove(pin: any): void {
-    console.log('status', pin.status);
+  remove(pin: FirebaseListObservable<any>): void {
+    // console.log('status', pin.status);
     if (pin.status === Status.APPROVED) {
       this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
@@ -54,7 +49,7 @@ export class PinManager {
     this.save(pin);
   }
 
-  approve(pin: any): void {
+  approve(pin: FirebaseListObservable<any>): void {
     // console.log(pin, pin.$key);
     pin.status = Status.APPROVED;
     pin.updatedAt = Date.now();
@@ -67,7 +62,7 @@ export class PinManager {
     this.submittedPins.remove(pin.$key);
   };
 
-  unapprove(pin: any): void {
+  unapprove(pin: FirebaseListObservable<any>): void {
     pin.status = Status.SUBMITTED;
     pin.updatedAt = Date.now();
 
@@ -84,12 +79,12 @@ export class PinManager {
   }
 
   // TODO: notify admin of flags through notifications
-  flag(pin: any): void {
+  flag(pin: FirebaseListObservable<any>): void {
     pin.flagged = true;
     this.save(pin);
   }
 
-  unflag(pin: any): void {
+  unflag(pin: FirebaseListObservable<any>): void {
     pin.flagged = false;
     this.save(pin);
   }
@@ -138,7 +133,7 @@ export class PinManager {
     pin.updatedAt = Date.now();
   }
 
-  private save(pin: any): void {
+  private save(pin: FirebaseListObservable<any>): void {
     pin.updatedAt = Date.now();
     const key = pin.$key;
     delete pin.$key;
@@ -150,36 +145,39 @@ export class PinManager {
     }
   }
 
-  /*private addToFavorites(pin: any, uid: any): void {
+  // TODO
+  addToFavorites(pin: FirebaseListObservable<any>, key: string): void {
     if (!pin.favorites) {
       pin.favorites = [];
     }
 
-    var idx = pin.favorites.indexOf(uid);
+    var idx = pin.favorites.indexOf(key);
     if (idx == -1) {
-      pin.favorites.push(uid);
+      pin.favorites.push(key);
       this.save(pin);
     }
-  }*/
+  }
 
-  /*private removeFromFavorites(pin: any, uid: any): void {
+  // TODO
+  removeFromFavorites(pin: FirebaseListObservable<any>, key: string): void {
     if (!pin || !pin.favorites) {
       return;
     }
 
-    var idx = pin.favorites.indexOf(uid);
+    var idx = pin.favorites.indexOf(key);
     if (idx > -1) {
       pin.favorites.splice(idx, 1);
       this.save(pin);
     }
-  }*/
+  }
 
-  isFavorite(pin: any, uid: any): boolean {
+  // TODO
+  isFavorite(pin: FirebaseListObservable<any>, key: string): boolean {
     if (!pin || !pin.favorites) {
       return false;
     }
 
-    return pin.favorites.indexOf(uid) > -1;
+    return pin.favorites.indexOf(key) > -1;
   }
 
 }

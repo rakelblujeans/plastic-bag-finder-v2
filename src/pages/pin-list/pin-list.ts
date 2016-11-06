@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2';
 
 import { PinManager } from '../../shared/services/pin-manager.service';
+import { UserManager } from '../../shared/services/user-manager.service';
 import { PinDetailPage } from '../pin-detail/pin-detail';
 
 declare var google;
@@ -29,9 +30,12 @@ export class PinListPage {
   autocomplete = {
     query: ''
   }
+  user: any;
 
   constructor(private navController: NavController, private elementRef:ElementRef,
-      private zone: NgZone, private pinManager: PinManager) {
+      private zone: NgZone, private pinManager: PinManager, private userManager: UserManager) {
+    this.user = this.userManager.getCurrentUser;
+    this.userIsAdmin = this.userManager.isAdmin();
   }
 
   // ngOnInit is problematic. Views are cached/loaded once, so it will never get hit again.
@@ -141,34 +145,26 @@ export class PinListPage {
   }
 
   favorite(pin: any): void {
-    // if (user) {
-    //   this.pinManager.addToFavorites(pin, user.uid);
-    // }
+    if (user) {
+      this.pinManager.addToFavorites(pin, user.$key);
+    }
   }
 
   unfavorite(pin: any): void {
-    // if (user) {
-    //   this.pinManager.removeFromFavorites(pin, user.uid);
-    // }
+    if (user) {
+      this.pinManager.removeFromFavorites(pin, user.$key);
+    }
   }
 
   isFavorite(pin: any): boolean {
-    // if (user) {
-    //   return this.pinManager.isFavorite(pin, user.uid);
-    // }
+    if (user) {
+      return this.pinManager.isFavorite(pin, user.$key);
+    }
     return false;
   }
 
   isAdmin(): boolean {
-    // if (typeof this.admin === undefined) {
-    //   this.userManager.isAdmin().then((val) => {
-    //     console.log('val', val);
-    //     // this.admin =
-    //   });
-    // }
-    // console.log(this.admin);
-    // return this.admin;
-    return false;
+    return this.userManager.isAdmin();
   }
 
   formatDate(dateMillis: any): string {

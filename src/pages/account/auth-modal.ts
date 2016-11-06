@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { ViewController, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 
-import { AccountPage } from './account';
 import { UserManager } from '../../shared/services/user-manager.service';
 
 @Component({
@@ -37,17 +36,17 @@ export class AuthModalPage {
 
     let authMethod;
     if (this.isSignup) {
-      console.log('signing', this.userManager);
+      // console.log('signing', this.userManager);
       authMethod = this.userManager.signup(userDetails);
     } else {
-      console.log('logging', this.userManager);
+      // console.log('logging', this.userManager);
       authMethod = this.userManager.login(userDetails);
     }
 
     authMethod.then((result) => {
       if (!result.error) {
         this.viewCtrl.dismiss();
-        console.log('user', result.user);
+        // console.log('user', result.user);
 
         // immediately sign in newly registered users
         if (this.isSignup) {

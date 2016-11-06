@@ -12,7 +12,7 @@
     <div class="account-centeredContent">
       <img class="account-bagImg" src="assets/images/bag.svg">
 
-      <h1 *ngIf="user">Welcome back {{user.details.email}}</h1>
+      <h1 *ngIf="user">Welcome back {{user.email}}</h1>
       <br>
       <h3 class="account-title">
         Saw a place giving out king size snickers bars? Let the other kids know.
@@ -24,12 +24,12 @@
       </p>
 
       <p>
-        <button ion-button large color="halloween" (click)="openSignupModal()" *ngIf="!user">
-          Sign up
-        </button>
-
         <button ion-button large color="halloween" (click)="openLoginModal()" *ngIf="!user">
           Login
+        </button>
+
+        <button ion-button large color="halloween" (click)="openSignupModal()" *ngIf="!user">
+          Sign up
         </button>
 
         <button ion-button large color="halloween" (click)="logout()" *ngIf="user">
@@ -42,10 +42,6 @@
     </div>
 
     <div class="account-footer">
-      <!--button ion-button small color="halloween" (click)="closeAccount()" *ngIf="user">
-        Delete my account
-      </button-->
-
       <p class="account-legalDisclaimer">
         Copyright 2016
         Raquel Bujans<br>
