@@ -31,6 +31,7 @@ export class PinListPage {
     query: ''
   }
   user: any;
+  userIsAdmin: boolean;
 
   constructor(private navController: NavController, private elementRef:ElementRef,
       private zone: NgZone, private pinManager: PinManager, private userManager: UserManager) {
