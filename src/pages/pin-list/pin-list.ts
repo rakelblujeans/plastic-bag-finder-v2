@@ -34,14 +34,16 @@ export class PinListPage {
 
   constructor(private navController: NavController, private elementRef:ElementRef,
       private zone: NgZone, private pinManager: PinManager, private userManager: UserManager) {
-    this.user = this.userManager.getCurrentUser;
-    this.userIsAdmin = this.userManager.isAdmin();
   }
 
-  // ngOnInit is problematic. Views are cached/loaded once, so it will never get hit again.
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.approvedPins = this.pinManager.approvedPins;
     this.submittedPins = this.pinManager.submittedPins;
+
+    this.user = this.userManager.getCurrentUser();
+    if (this.user) {
+      this.userIsAdmin = this.userManager.isAdmin();
+    }
   }
 
   updateSearch() {
@@ -145,20 +147,20 @@ export class PinListPage {
   }
 
   favorite(pin: any): void {
-    if (user) {
-      this.pinManager.addToFavorites(pin, user.$key);
+    if (this.user) {
+      this.pinManager.addToFavorites(pin, this.user.$key);
     }
   }
 
   unfavorite(pin: any): void {
-    if (user) {
-      this.pinManager.removeFromFavorites(pin, user.$key);
+    if (this.user) {
+      this.pinManager.removeFromFavorites(pin, this.user.$key);
     }
   }
 
   isFavorite(pin: any): boolean {
-    if (user) {
-      return this.pinManager.isFavorite(pin, user.$key);
+    if (this.user) {
+      return this.pinManager.isFavorite(pin, this.user.$key);
     }
     return false;
   }

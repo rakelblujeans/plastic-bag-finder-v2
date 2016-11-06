@@ -9,47 +9,46 @@
 
 <ion-content>
   <!-- Real floating action button, fixed. It will not scroll with the content -->
-  <div *ngIf="userIsAdmin">
-    <ion-fab top right edge>
-      <button ion-fab mini color="dark" (click)="openAddPanel()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-fab>
+  <ion-fab top right edge *ngIf="userIsAdmin">
+    <button ion-fab mini color="dark" (click)="openAddPanel()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
-    <ion-card>
-      <ion-card-content class="pins-form" [ngClass]="{
-            'is-visible': formExpanded,
-            'is-hidden': !formExpanded
-          }">
+  <ion-card *ngIf="userIsAdmin">
+    <ion-card-content class="pins-form" [ngClass]="{
+          'is-visible': formExpanded,
+          'is-hidden': !formExpanded
+        }">
 
-        <ion-searchbar placeholder="Search" [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()">
-        </ion-searchbar>
+      <ion-searchbar placeholder="Search" [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()">
+      </ion-searchbar>
 
-        <ion-list>
-          <ion-item *ngFor="let place of predictions" (click)="onPlaceClicked(place)">
-            {{place.description}}
-          </ion-item>
-        </ion-list>
+      <ion-list>
+        <ion-item *ngFor="let place of predictions" (click)="onPlaceClicked(place)">
+          {{place.description}}
+        </ion-item>
+      </ion-list>
 
-        <!-- dummy attribute required to make a request for place details -->
-        <div #fakeMap id="fakeMap"></div>
+      <!-- dummy attribute required to make a request for place details -->
+      <div #fakeMap id="fakeMap"></div>
 
-        <ion-list no-lines>
-          <ion-item>
-            <button type="submit" ion-button color="secondary" class="pins-button"
-                [disabled]="!isPlaceSubmitable" (click)="submitForm()">
-              <ion-icon name="checkmark-circle"></ion-icon>
-            </button>
+      <ion-list no-lines>
+        <ion-item>
+          <button type="submit" ion-button color="secondary" class="pins-button"
+              [disabled]="!isPlaceSubmitable" (click)="submitForm()">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </button>
 
-            <button ion-button color="danger" class="pins-button" (click)="cancelForm($event)">
-              <ion-icon name="close-circle"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
+          <button ion-button color="danger" class="pins-button" (click)="cancelForm($event)">
+            <ion-icon name="close-circle"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list>
 
-      </ion-card-content>
-    </ion-card>
-  </div>
+    </ion-card-content>
+  </ion-card>
+
 
   <ion-list>
     <ion-item-group>

@@ -34,29 +34,19 @@ export class AuthModalPage {
       password: this.password
     };
 
-    let authMethod;
     if (this.isSignup) {
-      // console.log('signing', this.userManager);
-      authMethod = this.userManager.signup(userDetails);
+      this.userManager.signup(userDetails, this.ourOnSubmit.bind(this));
     } else {
-      // console.log('logging', this.userManager);
-      authMethod = this.userManager.login(userDetails);
+     this.userManager.login(userDetails, this.ourOnSubmit.bind(this));
     }
+  }
 
-    authMethod.then((result) => {
-      if (!result.error) {
-        this.viewCtrl.dismiss();
-        // console.log('user', result.user);
-
-        // immediately sign in newly registered users
-        if (this.isSignup) {
-          this.userManager.login(userDetails);
-        }
-        this.onSubmit(result.user);
-
-      } else {
-        this.errorMsg = result.message.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
-      }
-    });
+  ourOnSubmit(result) {
+    if (!result.error) {
+      this.viewCtrl.dismiss();
+      this.onSubmit(result.user);
+    } else {
+      this.errorMsg = result.message.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
   }
 }

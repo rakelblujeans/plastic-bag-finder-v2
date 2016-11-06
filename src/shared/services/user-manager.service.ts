@@ -11,29 +11,55 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
 export class UserManager {
   currentUser: any;
 
-  constructor(private auth: Auth, private user: User, private af: AngularFire) {}
+  constructor(private auth: Auth, private user: User, private af: AngularFire) {
+    if (this.auth.isAuthenticated()) {
+      this.getUserRole(this.user.details.email);
+    }
+  }
 
   getCurrentUser(): any {
     return this.currentUser;
   }
 
-  login(userDetails: UserDetails): any {
-    return this.auth.login('basic', userDetails).then(() => {
-      const userRole = this.af.database.object('/userRoles/' +
-          this.sanitizeUsername(userDetails.email));
-      this.currentUser = {
-        email: userDetails.email,
-        role: userRole.role
-      };
-      return {
-        error: false,
-        user: this.currentUser
-      };
+  getUserRole(email, onComplete?) {
+    this.af.database.object('/userRoles/' + this.sanitizeUsername(email),
+      {
+        preserveSnapshot: true
+      }).subscribe((snapshots) => {
+        this.currentUser = {};
+        snapshots.forEach((snapshot) => {
+          this.currentUser[snapshot.key] = snapshot.val();
+        });
+
+        if (typeof onComplete === 'function') {
+          onComplete({
+            error: false,
+            user: this.currentUser
+          });
+        }
+      });
+  }
+
+  login(userDetails: UserDetails, onComplete: any): any {
+    this.auth.login('basic', userDetails).then(() => {
+      this.getUserRole(userDetails.email, onComplete);
+      // this.af.database.object('/userRoles/' +
+      //     this.sanitizeUsername(userDetails.email), {preserveSnapshot: true})
+      //     .subscribe((snapshots) => {
+      //       this.currentUser = {};
+      //       snapshots.forEach((snapshot) => {
+      //         this.currentUser[snapshot.key] = snapshot.val();
+      //       });
+      //       onComplete({
+      //         error: false,
+      //         user: this.currentUser
+      //       });
+      //     });
     }, (err: IDetailedError<string>) => {
       if (err.message.toLowerCase().startsWith('email and password are required')) {
-        return {error: true, message: 'Email and password are required'};
+        onComplete({error: true, message: 'Email and password are required'});
       } else {
-        return {error: true, message: 'Sorry, try again'};
+        onComplete({error: true, message: 'Sorry, try again'});
       }
     });
   }
@@ -41,7 +67,6 @@ export class UserManager {
   private sanitizeUsername(str: string): string {
     // TODO: introduces a vulnerability where we may have multiple accounts that map to the same
     // username
-    // console.log('we got', str);
     return str.replace(/@/gi, '_')
         .replace(/\./gi, '_')
         .replace(/#/gi, '_')
@@ -51,10 +76,8 @@ export class UserManager {
         .replace(/\]/gi, '_');
   }
 
-  signup(userDetails: UserDetails): any {
-    // console.log('addding', userDetails);
+  signup(userDetails: UserDetails, onComplete: any): any {
     return this.auth.signup(userDetails).then(() => {
-        // console.log('sanitized', this.sanitizeUsername(userDetails.email));
         this.af.database.object('/userRoles/' + this.sanitizeUsername(userDetails.email)).set({
           email: userDetails.email,
           role: 'customer'
@@ -63,7 +86,7 @@ export class UserManager {
 
     }, (err: IDetailedError<string[]>) => {
       for (let e of err.details) {
-        return {error: true, message: e};
+        onComplete({error: true, message: e});
       }
     });
   }
@@ -74,7 +97,6 @@ export class UserManager {
   }
 
   isAdmin(): boolean {
-    console.log("HERE", this.currentUser);
     return this.currentUser && this.currentUser.role === 'admin';
   }
 }

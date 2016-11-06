@@ -14,6 +14,9 @@ export class AccountPage {
 
   constructor(private auth: Auth, private modalCtrl: ModalController,
       private navCtrl: NavController, private userManager: UserManager) {
+  }
+
+  ionViewWillEnter() {
     this.user = this.userManager.getCurrentUser();
   }
 
