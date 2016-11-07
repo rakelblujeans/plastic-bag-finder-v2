@@ -21,17 +21,16 @@ export class PinDetailPage {
       private domSanitizer : DomSanitizer, private pinManager: PinManager,
       private userManager: UserManager) {
     this.pinKey = this.navParams.get('key');
-    this.isApproved = this.navParams.get('isApproved');
+    this.isApproved = !!this.navParams.get('isApproved');
     this.googleMapsKey = googleMapsKey;
   }
 
   ionViewWillEnter() {
     this.pinManager.find(this.pinKey, this.isApproved).subscribe((snapshot) => {
-      if (!this.pin.placeId) {
-        this.pin = snapshot;
+      if (!this.pin.placeId && snapshot.val()) {
+        this.pin = snapshot.val();
         this.mapUrl = this.sanitizeUrl('https://www.google.com/maps/embed/v1/place?q=place_id:' +
             this.pin.placeId + '&key=' + googleMapsKey);
-        console.log(this.pin, this.pin.placeId, this.mapUrl);
         // TODO: no way to unsubscribe right now...
       }
     });

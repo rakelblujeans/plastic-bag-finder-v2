@@ -47,6 +47,7 @@ export class PinManager {
   }
 
   remove(pin: any): void {
+    this.af.database.object('/addresses/').remove(pin.address);
     if (pin.status === Status.APPROVED) {
       this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
@@ -106,13 +107,16 @@ export class PinManager {
   // Used to display approved pins on the map
   find(key: string, isApproved: boolean): FirebaseObjectObservable<any> {
     if (isApproved) {
-      return this.af.database.object('/pins/approved/' + key);
+      console.log('approved');
+      return this.af.database.object('/pins/approved/' + key, {preserveSnapshot: true});
     } else {
-      return this.af.database.object('/pins/submitted/' + key);
+      console.log('submitted');
+      return this.af.database.object('/pins/submitted/' + key, {preserveSnapshot: true});
     }
   }
 
   private setData(pin: any, place: any): void {
+    console.log('SET DATA', place);
     // console.log(pin, place;
     pin.placeId = place.place_id;
     pin.lat = place.geometry.location.lat();
@@ -121,11 +125,11 @@ export class PinManager {
     pin.short_address = place.formatted_address.substring(0, place.formatted_address.indexOf(','));
     pin.adr_address = place.adr_address;
     pin.vicinity = place.vicinity; // local area, like Brooklyn
-    if (pin.name) {
+    if (place.name) {
       pin.name = place.name;
     }
 
-    if (pin.phone) {
+    if (place.phone) {
       pin.phone = place.formatted_phone_number;
     }
 
@@ -133,11 +137,11 @@ export class PinManager {
       pin.opening_hours = place.opening_hours;
     }
 
-    if (pin.url) {
+    if (place.url) {
       pin.url = place.url;
     }
 
-    if (pin.icon) {
+    if (place.icon) {
       pin.icon = place.icon;
     }
 
@@ -166,7 +170,7 @@ export class PinManager {
     var idx = pin.favorites.indexOf(key);
     if (idx === -1) {
       pin.favorites.push(key);
-      console.log('PUSHING KEY', pin.favorites);
+      // console.log('PUSHING KEY', pin.favorites);
       this.save(pin);
     }
   }

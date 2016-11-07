@@ -9,34 +9,34 @@
 
 <ion-content>
   <div class="pinDetail-content">
-    <a class="pinDetail-line" [href]="pin.url" *ngIf="pin.url">
+    <a class="pinDetail-line" [href]="pin.url" *ngIf="pin?.url">
       <h2>
         <span [innerHTML]="pin.adr_address"></span>
       </h2>
     </a>
 
-    <h2 class="pinDetail-line" *ngIf="!pin.url">
+    <h2 class="pinDetail-line" *ngIf="!pin?.url">
       <span [innerHTML]="pin.adr_address"></span>
     </h2>
 
-    <a class="pinDetail-line" href="tel:{{pin.phone}}" *ngIf="pin.phone">
+    <a class="pinDetail-line" href="tel:{{pin.phone}}" *ngIf="pin?.phone">
       <h4>{{pin.phone}}</h4>
     </a>
 
-    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!pin.phone">
+    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!pin?.phone">
       (No phone available)
     </p>
 
-    <ul class="pinDetail-line" *ngIf="pin.opening_hours">
+    <ul class="pinDetail-line" *ngIf="pin?.opening_hours">
       <!--li class="pinDetail-openNowMessage" ng-if="pin.opening_hours.open_now"-->
         <!-- Open Now -->
       <!--/li-->
-      <li *ngFor="let daily_hours of pin.opening_hours.weekday_text">
+      <li *ngFor="let daily_hours of pin?.opening_hours.weekday_text">
         {{daily_hours}}
       </li>
     </ul>
 
-    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!pin.opening_hours">
+    <p class="pinDetail-line pinDetail-missingInfo" *ngIf="!pin?.opening_hours">
       (No hours available)
     </p>
 

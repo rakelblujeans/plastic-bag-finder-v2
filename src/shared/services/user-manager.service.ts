@@ -23,24 +23,22 @@ export class UserManager {
 
   getUserRole(email, onComplete?) {
     const userId = this.sanitizeUsername(email);
-    this.af.database.object('/userRoles/' + userId,
-      {
-        preserveSnapshot: true
-      }).subscribe((snapshots) => {
-        this.currentUser = {};
-        snapshots.forEach((snapshot) => {
-          this.currentUser[snapshot.key] = snapshot.val();
-        });
-
-        this.currentUser.id = userId;
-
-        if (typeof onComplete === 'function') {
-          onComplete({
-            error: false,
-            user: this.currentUser
+    this.af.database.object('/userRoles/' + userId, {preserveSnapshot: true})
+        .subscribe((snapshots) => {
+          this.currentUser = {};
+          snapshots.forEach((snapshot) => {
+            this.currentUser[snapshot.key] = snapshot.val();
           });
-        }
-      });
+
+          this.currentUser.id = userId;
+
+          if (typeof onComplete === 'function') {
+            onComplete({
+              error: false,
+              user: this.currentUser
+            });
+          }
+        });
   }
 
   login(userDetails: UserDetails, onComplete?: any): any {
