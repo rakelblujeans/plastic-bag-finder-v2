@@ -47,7 +47,7 @@ export class PinManager {
   }
 
   remove(pin: any): void {
-    this.af.database.object('/addresses/').remove(pin.address);
+    this.af.database.object('/addresses/' + pin.address).remove();
     if (pin.status === Status.APPROVED) {
       this.approvedPins.remove(pin.$key);
     } else if (pin.status === Status.SUBMITTED) {
