@@ -20,6 +20,6 @@ export class MapPage {
   }
 
   ionViewWillEnter() {
-    this.pinMap.reloadMarkers(this.userManager.getCurrentUser());
+    // We don't need to force a marker refresh here. Markers are automatically kept in sync.
   }
 }

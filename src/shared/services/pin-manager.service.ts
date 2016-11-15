@@ -116,8 +116,7 @@ export class PinManager {
   }
 
   private setData(pin: any, place: any): void {
-    console.log('SET DATA', place);
-    // console.log(pin, place;
+    // console.log('SET DATA', pin, place);
     pin.placeId = place.place_id;
     pin.lat = place.geometry.location.lat();
     pin.lng = place.geometry.location.lng();
