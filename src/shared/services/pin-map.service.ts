@@ -34,7 +34,6 @@ export class PinMap {
   }
 
   reloadMarkers(user: any): void {
-    console.log('got user', user);
     this.user = user;
     this.clearMarkers();
     this.loadMarkers();
@@ -82,7 +81,7 @@ export class PinMap {
 
   private loadMarkers(): void {
     this.pinManager.approvedPins.subscribe((pins) => {
-      console.log('got pins', pins);
+      // console.log('got pins', pins);
       for (const pin of pins) {
         const pinPos = new google.maps.LatLng(pin.lat, pin.lng);
 
