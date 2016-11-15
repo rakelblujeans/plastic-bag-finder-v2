@@ -2,7 +2,7 @@
   <ion-navbar color="plastic">
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
-      Plastic Bag Recycling
+      Plastic Bag Recycler
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -74,7 +74,7 @@
           <ion-icon name="trash"></ion-icon>
         </button>
         <!-- flag -->
-        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
+        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged && user">
           <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- unflag -->
@@ -87,12 +87,12 @@
           <ion-icon name="checkmark-circle"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin) && user">
           <ion-icon name="star-outline"></ion-icon>
         </button>
         <!-- unfavorite -->
         <button ion-button outline color="favorite" (click)="unfavorite(pin)"
-            *ngIf="isFavorite(pin)">
+            *ngIf="user && isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
 
@@ -118,7 +118,7 @@
           <ion-icon name="trash"></ion-icon>
         </button>
         <!-- flag -->
-        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged">
+        <button ion-button outline (click)="flag(pin)" *ngIf="!pin.flagged && user">
           <ion-icon name="ios-flag-outline"></ion-icon>
         </button>
         <!-- unflag -->
@@ -130,12 +130,12 @@
           <ion-icon name="checkmark-circle-outline"></ion-icon>
         </button>
         <!-- favorite -->
-        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin)">
+        <button ion-button outline (click)="favorite(pin)" *ngIf="!isFavorite(pin) && user">
           <ion-icon name="star-outline"></ion-icon>
         </button>
         <!-- unfavorite -->
         <button ion-button outline color="favorite" (click)="unfavorite(pin)"
-            *ngIf="isFavorite(pin)">
+            *ngIf="user && isFavorite(pin)">
           <ion-icon name="star"></ion-icon>
         </button>
 
