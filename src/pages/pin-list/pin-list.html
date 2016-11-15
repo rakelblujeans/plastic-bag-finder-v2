@@ -58,7 +58,7 @@
     <ion-item-group>
       <ion-item-divider light>Approved Locations</ion-item-divider>
 
-      <ion-item detail-push *ngFor="let pin of approvedPins | async">
+      <ion-item class="slide-in-both-ways" detail-push *ngFor="let pin of approvedPins | async">
         <h2>{{pin.name}}</h2>
         <p class="pins-address">
           {{pin.address}}<br>
@@ -102,7 +102,7 @@
     </ion-item-group>
     <ion-item-group *ngIf="userIsAdmin">
        <ion-item-divider light>Locations Awaiting Moderation</ion-item-divider>
-      <ion-item *ngFor="let pin of submittedPins | async">
+      <ion-item class="slide-in-both-ways" *ngFor="let pin of submittedPins | async">
         <h2>{{pin.name}}</h2>
         <p class="pins-address">
           {{pin.address}}<br>
