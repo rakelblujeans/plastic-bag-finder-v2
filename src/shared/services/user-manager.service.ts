@@ -44,18 +44,6 @@ export class UserManager {
   login(userDetails: UserDetails, onComplete?: any): any {
     this.auth.login('basic', userDetails).then(() => {
       this.getUserRole(userDetails.email, onComplete);
-      // this.af.database.object('/userRoles/' +
-      //     this.sanitizeUsername(userDetails.email), {preserveSnapshot: true})
-      //     .subscribe((snapshots) => {
-      //       this.currentUser = {};
-      //       snapshots.forEach((snapshot) => {
-      //         this.currentUser[snapshot.key] = snapshot.val();
-      //       });
-      //       onComplete({
-      //         error: false,
-      //         user: this.currentUser
-      //       });
-      //     });
     }, (err: IDetailedError<string>) => {
       if (err.message.toLowerCase().startsWith('email and password are required')) {
         onComplete({error: true, message: 'Email and password are required'});
@@ -83,7 +71,7 @@ export class UserManager {
           email: userDetails.email,
           role: 'customer'
         });
-        return this.login(userDetails);
+        this.login(userDetails, onComplete);
 
     }, (err: IDetailedError<string[]>) => {
       for (let e of err.details) {
