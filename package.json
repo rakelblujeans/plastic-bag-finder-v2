@@ -51,7 +51,9 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-compat",
     "cordova-plugin-network-information",
-    "cordova-plugin-googleplus"
+    "cordova-plugin-googleplus",
+    "cordova-plugin-admobpro",
+    "cordova-plugin-extension"
   ],
   "cordovaPlatforms": [
     "ios",
