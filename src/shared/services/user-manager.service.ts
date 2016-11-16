@@ -88,4 +88,23 @@ export class UserManager {
   isAdmin(): boolean {
     return this.currentUser && this.currentUser.role === 'admin';
   }
+
+  addFavorite(pin: any) {
+    console.log('got pin id', pin);
+    let favoritesArr = this.currentUser.favorites ? this.currentUser.favorites.slice() : [];
+    // const isAlreadyAdded = favoritesArr.some((p) => p.placeId === pin.placeId);
+    // if (!isAlreadyAdded) {
+      favoritesArr.push(pin);
+      const user = this.af.database.object('/userRoles/' + this.sanitizeUsername(this.currentUser.email));
+      user.update({favorites: favoritesArr});
+    // }
+  }
+
+  removeFavorite(pin: any) {
+    let favoritesArr = this.currentUser.favorites ? this.currentUser.favorites.slice() : [];
+    favoritesArr = favoritesArr.filter((p) => pin.placeId != p.placeId);
+
+    const user = this.af.database.object('/userRoles/' + this.sanitizeUsername(this.currentUser.email));
+    user.update({favorites: favoritesArr});
+  }
 }

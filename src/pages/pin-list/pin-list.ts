@@ -157,15 +157,15 @@ export class PinListPage {
   }
 
   favorite(pin: any): void {
-    this.user && this.pinManager.addToFavorites(pin, this.user.id);
+    this.user && this.pinManager.addToFavorites(pin, this.user, this.userManager);
   }
 
   unfavorite(pin: any): void {
-    this.user && this.pinManager.removeFromFavorites(pin, this.user.id);
+    this.user && this.pinManager.removeFromFavorites(pin, this.user, this.userManager);
   }
 
   isFavorite(pin: any): boolean {
-    return this.user && this.pinManager.isFavorite(pin, this.user.id);
+    return this.user && this.pinManager.isFavorite(pin, this.user);
   }
 
   isAdmin(): boolean {

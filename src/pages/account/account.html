@@ -10,7 +10,13 @@
 <ion-content>
   <div class="account-content">
     <div class="account-centeredContent">
-      <h1 *ngIf="user">Welcome back {{user.email}}!</h1>
+      <h1 *ngIf="user">Welcome back {{user.email}}!
+        <br>
+        <button ion-button small color="plastic" (click)="logout()" *ngIf="user">
+          Logout
+        </button>
+      </h1>
+
       <img class="account-bagImg" src="assets/images/bag.svg">
       <h4 class="account-title">
         Get rid of that pile lurking underneath the sink. Recycle some plastic bags!
@@ -29,15 +35,22 @@
         <button ion-button large color="plastic" (click)="openSignupModal()" *ngIf="!user">
           Sign up
         </button>
-
-        <button ion-button large color="plastic" (click)="logout()" *ngIf="user">
-          Logout
-        </button>
       </p>
-
-      <a [href]="passwordResetUrl">Forgot Password</a>
+      <a [href]="passwordResetUrl" *ngIf="!user">Forgot Password</a>
 
     </div>
+
+    <ion-card *ngIf="user && user.favorites">
+      <ion-card-header>
+        Favorited Locations
+      </ion-card-header>
+
+      <ion-list>
+        <button ion-item *ngFor="let pin of user.favorites" (click)="visitPin(pin)">
+          {{pin.address}}
+        </button>
+      </ion-list>
+    </ion-card>
 
     <div class="account-footer">
       <p class="account-legalDisclaimer">

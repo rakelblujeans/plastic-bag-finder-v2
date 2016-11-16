@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Auth } from '@ionic/cloud-angular';
 import { ModalController, NavController, Platform } from 'ionic-angular';
 
-import { AuthModalPage } from './auth-modal';
 import { UserManager } from '../../shared/services/user-manager.service';
+import { PinDetailPage } from '../pin-detail/pin-detail';
+import { AuthModalPage } from './auth-modal';
 
 @Component({
   selector: 'page-account',
@@ -14,15 +15,19 @@ export class AccountPage {
   passwordResetUrl: any;
 
   constructor(private auth: Auth, private modalCtrl: ModalController,
-      private navCtrl: NavController, private platform: Platform,
+      private navController: NavController, private platform: Platform,
       private userManager: UserManager) {
     this.passwordResetUrl = auth.passwordResetUrl;
     platform.ready().then(() => {
-      this.user = this.userManager.getCurrentUser();
+      this.setup();
     });
   }
 
   ionViewWillEnter() {
+    this.setup();
+  }
+
+  setup() {
     this.user = this.userManager.getCurrentUser();
   }
 
@@ -49,5 +54,9 @@ export class AccountPage {
   logout(): void {
     this.userManager.logout();
     this.user = null;
+  }
+
+  visitPin(pin: any): void {
+    this.navController.push(PinDetailPage, {pin});
   }
 }

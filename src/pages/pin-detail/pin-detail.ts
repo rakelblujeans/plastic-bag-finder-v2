@@ -22,6 +22,7 @@ export class PinDetailPage {
       private platform: Platform, private userManager: UserManager) {
     this.pinKey = this.navParams.get('key');
     this.isApproved = !!this.navParams.get('isApproved');
+    this.pin = this.navParams.get('pin');
     this.googleMapsKey = googleMapsKey;
 
     platform.ready().then(() => {
@@ -34,6 +35,13 @@ export class PinDetailPage {
   }
 
   setup() {
+    // trigger a preload of user data
+    this.userManager.getCurrentUser();
+
+    if (this.pin) {
+      return;
+    }
+
     this.pinManager.find(this.pinKey, this.isApproved).subscribe((snapshot) => {
       if (!this.pin.placeId && snapshot.val()) {
         this.pin = snapshot.val();
@@ -42,8 +50,6 @@ export class PinDetailPage {
         // TODO: no way to unsubscribe right now...
       }
     });
-    // trigger a preload of user data
-    this.userManager.getCurrentUser();
   }
 
   sanitizeUrl(url: string): any {

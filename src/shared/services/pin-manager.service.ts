@@ -107,10 +107,10 @@ export class PinManager {
   // Used to display approved pins on the map
   find(key: string, isApproved: boolean): FirebaseObjectObservable<any> {
     if (isApproved) {
-      console.log('approved');
+      // console.log('approved');
       return this.af.database.object('/pins/approved/' + key, {preserveSnapshot: true});
     } else {
-      console.log('submitted');
+      // console.log('submitted');
       return this.af.database.object('/pins/submitted/' + key, {preserveSnapshot: true});
     }
   }
@@ -162,35 +162,41 @@ export class PinManager {
     }
   }
 
-  addToFavorites(pin: any, key: string): void {
+  addToFavorites(pin: any, user: any, userManager: any): void {
     if (!pin.favorites) {
       pin.favorites = [];
     }
-    var idx = pin.favorites.indexOf(key);
+    const idx = pin.favorites.indexOf(user.id);
     if (idx === -1) {
-      pin.favorites.push(key);
+      pin.favorites.push(user.id);
       // console.log('PUSHING KEY', pin.favorites);
       this.save(pin);
+      userManager.addFavorite(pin);
     }
   }
 
-  removeFromFavorites(pin: any, key: string): void {
+  removeFromFavorites(pin: any, user: any, userManager: any): void {
     if (!pin || !pin.favorites) {
       return;
     }
 
-    var idx = pin.favorites.indexOf(key);
+    const idx = pin.favorites.indexOf(user.id);
     if (idx !== -1) {
+      userManager.removeFavorite(pin);
       pin.favorites.splice(idx, 1);
       this.save(pin);
     }
   }
 
-  isFavorite(pin: any, key: string): boolean {
+  isFavorite(pin: any, user: any): boolean {
     if (!pin || !pin.favorites) {
       return false;
     }
 
-    return pin.favorites.indexOf(key) !== -1;
+    return pin.favorites.indexOf(user.id) !== -1;
+  }
+
+  getFavorites() {
+
   }
 }
