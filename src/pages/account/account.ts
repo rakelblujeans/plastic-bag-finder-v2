@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Auth } from '@ionic/cloud-angular';
-import { ModalController, NavController } from 'ionic-angular';
+import { ModalController, NavController, Platform } from 'ionic-angular';
 
 import { AuthModalPage } from './auth-modal';
 import { UserManager } from '../../shared/services/user-manager.service';
@@ -14,8 +14,12 @@ export class AccountPage {
   passwordResetUrl: any;
 
   constructor(private auth: Auth, private modalCtrl: ModalController,
-      private navCtrl: NavController, private userManager: UserManager) {
+      private navCtrl: NavController, private platform: Platform,
+      private userManager: UserManager) {
     this.passwordResetUrl = auth.passwordResetUrl;
+    platform.ready().then(() => {
+      this.user = this.userManager.getCurrentUser();
+    });
   }
 
   ionViewWillEnter() {

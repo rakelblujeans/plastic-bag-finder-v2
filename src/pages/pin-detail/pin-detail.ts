@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 
 import { googleMapsKey } from '../../shared/google-api-key';
 import { PinManager } from '../../shared/services/pin-manager.service';
@@ -19,13 +19,21 @@ export class PinDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       private domSanitizer : DomSanitizer, private pinManager: PinManager,
-      private userManager: UserManager) {
+      private platform: Platform, private userManager: UserManager) {
     this.pinKey = this.navParams.get('key');
     this.isApproved = !!this.navParams.get('isApproved');
     this.googleMapsKey = googleMapsKey;
+
+    platform.ready().then(() => {
+      this.setup();
+    });
   }
 
   ionViewWillEnter() {
+    // this.setup();
+  }
+
+  setup() {
     this.pinManager.find(this.pinKey, this.isApproved).subscribe((snapshot) => {
       if (!this.pin.placeId && snapshot.val()) {
         this.pin = snapshot.val();

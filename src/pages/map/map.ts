@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Platform } from 'ionic-angular';
 
 import { PinMap } from '../../shared/services/pin-map.service';
 import { UserManager } from '../../shared/services/user-manager.service';
@@ -11,15 +12,15 @@ import { UserManager } from '../../shared/services/user-manager.service';
 
 export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
-  map: any;
 
-  constructor(private pinMap: PinMap, private userManager: UserManager) {}
+  constructor(private pinMap: PinMap, private platform: Platform,
+      private userManager: UserManager) {
 
-  ionViewDidLoad() {
-    this.pinMap.loadMap(this.mapElement.nativeElement, this.userManager.getCurrentUser());
-  }
-
-  ionViewWillEnter() {
-    // We don't need to force a marker refresh here. Markers are automatically kept in sync.
+    // ionViewDidLoad works ok when testing in the browser, but when running on device it's not
+    // sufficient. Since we are using native plugins we must wait until the device is ready
+    // before calling out to them.
+    platform.ready().then(() => {
+      this.pinMap.loadMap(this.mapElement.nativeElement, this.userManager.getCurrentUser());
+    });
   }
 }

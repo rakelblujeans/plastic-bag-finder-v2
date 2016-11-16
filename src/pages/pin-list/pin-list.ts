@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2';
 
 import { PinManager } from '../../shared/services/pin-manager.service';
@@ -35,17 +35,17 @@ export class PinListPage {
   errorMsg: string = null;
 
   constructor(private navController: NavController, private elementRef:ElementRef,
-      private zone: NgZone, private pinManager: PinManager, private userManager: UserManager) {
-  }
+      private zone: NgZone, private pinManager: PinManager, private platform: Platform,
+      private userManager: UserManager) {
+    platform.ready().then(() => {
+      this.approvedPins = this.pinManager.approvedPins;
+      this.submittedPins = this.pinManager.submittedPins;
 
-  ionViewWillEnter() {
-    this.approvedPins = this.pinManager.approvedPins;
-    this.submittedPins = this.pinManager.submittedPins;
-
-    this.user = this.userManager.getCurrentUser();
-    if (this.user) {
-      this.userIsAdmin = this.userManager.isAdmin();
-    }
+      this.user = this.userManager.getCurrentUser();
+      if (this.user) {
+        this.userIsAdmin = this.userManager.isAdmin();
+      }
+    });
   }
 
   updateSearch() {
