@@ -27,19 +27,19 @@ export class AdmobManager {
   }
 
   createBanner(): void {
-      if (this.admobId && AdMob) {
-        this.setIds();
-        AdMob.createBanner({
-          adId: this.admobId.banner,
-          // isTesting: true,
-          position:AdMob.AD_POSITION.BOTTOM_CENTER,
-        });
-      }
+    this.setIds();
+    if (this.admobId && typeof AdMob !== 'undefined') {
+      AdMob.createBanner({
+        adId: this.admobId.banner,
+        // isTesting: true,
+        position:AdMob.AD_POSITION.BOTTOM_CENTER,
+      });
+    }
   }
 
   // showInterstitial(): void {
   //   this.platform.ready().then(() => {
-  //     if (this.admobId && AdMob) {
+  //     if (this.admobId && typeof AdMob !== 'undefined') {
   //       AdMob.prepareInterstitial({
   //         adId: this.admobId.interstitial,
   //         autoShow: true
@@ -49,7 +49,7 @@ export class AdmobManager {
   // }
 
   showBanner(position: any): void {
-    if (this.admobId && AdMob) {
+    if (this.admobId && typeof AdMob !== 'undefined') {
       const positionMap = {
         bottom: AdMob.AD_POSITION.BOTTOM_CENTER,
         top: AdMob.AD_POSITION.TOP_CENTER
@@ -60,7 +60,7 @@ export class AdmobManager {
 
   // hideBanner(position: any): void {
   //   this.platform.ready().then(() => {
-  //     if (this.admobId && AdMob) {
+  //     if (this.admobId && typeof AdMob !== 'undefined') {
   //       AdMob.hideBanner();
   //     }
   //   });
