@@ -3,6 +3,7 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
+import { AdmobManager } from '../shared/services/admob-manager.service';
 import { ConnectivityMonitor } from '../shared/services/connectivity-monitor.service';
 import { GoogleMapsLoader } from '../shared/services/google-maps-loader.service';
 import { PinManager } from '../shared/services/pin-manager.service';
@@ -67,6 +68,6 @@ const cloudSettings: CloudSettings = {
     PinDetailPage,
     TabsPage
   ],
-  providers: [ConnectivityMonitor, GoogleMapsLoader, PinManager, UserManager]
+  providers: [AdmobManager, ConnectivityMonitor, GoogleMapsLoader, PinManager, UserManager]
 })
 export class AppModule {}

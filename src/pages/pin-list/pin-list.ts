@@ -191,4 +191,8 @@ export class PinListPage {
         isApproved
       });
   }
+
+  // trackPinBy(index: any, pin: any) {
+  //   return pin.placeId;
+  // }
 }
