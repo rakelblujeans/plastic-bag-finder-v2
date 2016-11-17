@@ -2,7 +2,7 @@
   <ion-navbar color="plastic">
     <ion-title>
       <img class="bag-logo" src="assets/images/bag.svg">
-      <div class="title-text">{{(pin.name || 'Location Detail')}}</div>
+      <div class="title-text">{{(pin?.name || 'Location Detail')}}</div>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -11,12 +11,12 @@
   <div class="pinDetail-content">
     <a class="pinDetail-line" [href]="pin.url" *ngIf="pin?.url">
       <h2>
-        <span [innerHTML]="pin.adr_address"></span>
+        <span [innerHTML]="pin?.adr_address"></span>
       </h2>
     </a>
 
     <h2 class="pinDetail-line" *ngIf="!pin?.url">
-      <span [innerHTML]="pin.adr_address"></span>
+      <span [innerHTML]="pin?.adr_address"></span>
     </h2>
 
     <a class="pinDetail-line" href="tel:{{pin.phone}}" *ngIf="pin?.phone">

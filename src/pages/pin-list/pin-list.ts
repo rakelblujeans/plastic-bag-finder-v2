@@ -48,6 +48,13 @@ export class PinListPage {
     });
   }
 
+  ionViewWillEnter() {
+    this.user = this.userManager.getCurrentUser();
+    if (this.user) {
+      this.userIsAdmin = this.userManager.isAdmin();
+    }
+  }
+
   updateSearch() {
     this.errorMsg = null;
 
@@ -184,10 +191,11 @@ export class PinListPage {
     return date.toLocaleTimeString('en-us', options);
   }
 
-  viewDetail(pinKey: string, isApproved: boolean) {
+  viewDetail(pin: any, isApproved: boolean) {
     this.navController.push(PinDetailPage,
       {
-        key: pinKey,
+        // key: pinKey,
+        pin,
         isApproved
       });
   }

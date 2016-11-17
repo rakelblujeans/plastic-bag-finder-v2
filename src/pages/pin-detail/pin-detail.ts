@@ -30,14 +30,15 @@ export class PinDetailPage {
     });
   }
 
-  ionViewWillEnter() {
+  // data doesn't change here, so we don't need to update
+  // ionViewWillEnter() {
     // this.setup();
-  }
+  // }
 
   setup() {
     // trigger a preload of user data
     this.userManager.getCurrentUser();
-
+    // console.log(this.pin);
     if (this.pin) {
       return;
     }
