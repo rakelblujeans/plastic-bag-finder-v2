@@ -15,12 +15,10 @@
     </button>
   </ion-fab>
 
-  <ion-card *ngIf="userIsAdmin">
-    <ion-card-content class="pins-form" [ngClass]="{
-          'is-visible': formExpanded,
-          'is-hidden': !formExpanded
-        }">
-
+  <ion-card *ngIf="userIsAdmin" class="pins-form" [ngClass]="{
+      'is-visible': formExpanded
+    }">
+    <ion-card-content>
       <ion-searchbar placeholder="Search" [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()">
       </ion-searchbar>
 

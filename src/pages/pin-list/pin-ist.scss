@@ -1,4 +1,4 @@
-ge-pin-list {
+page-pin-list {
   .pins-button {
     display: inline;
     margin: 0;
@@ -6,14 +6,11 @@ ge-pin-list {
   }
 
   .pins-form {
-  }
-
-  .pins-form.is-hidden {
     display: none;
   }
 
   .pins-form.is-visible {
-    display: visible;
+    display: block;
   }
 
   /*@-webkit-keyframes slideInBothWays {

@@ -106,6 +106,7 @@ export class PinListPage {
   }
 
   openAddPanel(): void {
+    console.log('open');
     if (!this.formExpanded) {
       this.place = {};
       this.autocomplete.query = '';
@@ -116,7 +117,7 @@ export class PinListPage {
 
   cancelForm(event: any): void {
     this.errorMsg = null;
-    // console.log('canceled');
+    console.log('canceled');
     this.formExpanded = false;
     // console.log('Event', event);
     event.preventDefault();
